@@ -1,0 +1,363 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Tool">
+      <UniqueIdentifier>{c5c278bd-927a-485a-bb73-3c572e399b65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{4a24165f-cfe1-4521-8bb4-f5b31a0c9df0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\windows">
+      <UniqueIdentifier>{47cf4064-2ac7-4d7a-a092-2c9b5c195c47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sip">
+      <UniqueIdentifier>{7c9504ba-524c-48a6-82c3-ae69400ed7c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Media">
+      <UniqueIdentifier>{f96d8794-b0d5-42c0-bbf5-c0c5ae26dcc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mqtt">
+      <UniqueIdentifier>{02e53b31-3bc1-4b14-abf4-dca8e0e183c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="http">
+      <UniqueIdentifier>{10a526f0-b7fd-446a-a77c-abf9caf9b42c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Media\h26x_sps_parse">
+      <UniqueIdentifier>{6f25f7ea-d400-4370-8708-93d20477a590}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\ComTime.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Encrypt.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\FileEx.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\MarkupSTL.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\strCoding.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\TBuff.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\ThreadP.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\TLog.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\TRingBuff.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\UdpY.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\XCritical.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\XEvent.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\XFileUtil.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\XMutex.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\XStrUtil.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\XThread.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\XTime.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="windows\Monitor.h">
+      <Filter>Network\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="windows\TcpClient.h">
+      <Filter>Network\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="windows\TcpServer.h">
+      <Filter>Network\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="windows\UdpM.h">
+      <Filter>Network\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Sip\Counter.h">
+      <Filter>Sip</Filter>
+    </ClInclude>
+    <ClInclude Include="Sip\MsgParser.h">
+      <Filter>Sip</Filter>
+    </ClInclude>
+    <ClInclude Include="Sip\Register.h">
+      <Filter>Sip</Filter>
+    </ClInclude>
+    <ClInclude Include="Sip\SipMsg.h">
+      <Filter>Sip</Filter>
+    </ClInclude>
+    <ClInclude Include="Sip\SubMsg.h">
+      <Filter>Sip</Filter>
+    </ClInclude>
+    <ClInclude Include="UdpM_G.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="drone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Device.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MonitorManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Catalog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Channel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Media\Es2Rtp.h">
+      <Filter>Media</Filter>
+    </ClInclude>
+    <ClInclude Include="Client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rtcp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChannelMp4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Media\DataUtil.h">
+      <Filter>Media</Filter>
+    </ClInclude>
+    <ClInclude Include="Media\MeadiaPaser.h">
+      <Filter>Media</Filter>
+    </ClInclude>
+    <ClInclude Include="mqtt\CProduct.h">
+      <Filter>mqtt</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\cJSON.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Http.h">
+      <Filter>http</Filter>
+    </ClInclude>
+    <ClInclude Include="Media\h26x_sps_parse\bs.h">
+      <Filter>Media\h26x_sps_parse</Filter>
+    </ClInclude>
+    <ClInclude Include="Media\h26x_sps_parse\h26x_sps_parse.h">
+      <Filter>Media\h26x_sps_parse</Filter>
+    </ClInclude>
+    <ClInclude Include="Media\h26x_sps_parse\h264_avcc.h">
+      <Filter>Media\h26x_sps_parse</Filter>
+    </ClInclude>
+    <ClInclude Include="Media\h26x_sps_parse\h264_sei.h">
+      <Filter>Media\h26x_sps_parse</Filter>
+    </ClInclude>
+    <ClInclude Include="Media\h26x_sps_parse\h264_stream.h">
+      <Filter>Media\h26x_sps_parse</Filter>
+    </ClInclude>
+    <ClInclude Include="Media\h26x_sps_parse\h265_avcc.h">
+      <Filter>Media\h26x_sps_parse</Filter>
+    </ClInclude>
+    <ClInclude Include="Media\h26x_sps_parse\h265_sei.h">
+      <Filter>Media\h26x_sps_parse</Filter>
+    </ClInclude>
+    <ClInclude Include="Media\h26x_sps_parse\h265_stream.h">
+      <Filter>Media\h26x_sps_parse</Filter>
+    </ClInclude>
+    <ClInclude Include="Media\ps_demux.h">
+      <Filter>Media</Filter>
+    </ClInclude>
+    <ClInclude Include="Media\ps_struct.h">
+      <Filter>Media</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VirturalDrone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\Encrypt.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\FileEx.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\MarkupSTL.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\strCoding.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\ThreadP.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\TLog.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\UdpY.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\XCritical.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\XEvent.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\XFileUtil.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\XMutex.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\XStrUtil.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\XThread.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\XTime.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\Monitor.cpp">
+      <Filter>Network\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\TcpClient.cpp">
+      <Filter>Network\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\TcpServer.cpp">
+      <Filter>Network\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\UdpM.cpp">
+      <Filter>Network\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip\Counter.cpp">
+      <Filter>Sip</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip\MsgParser.cpp">
+      <Filter>Sip</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip\Register.cpp">
+      <Filter>Sip</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip\SipMsg.cpp">
+      <Filter>Sip</Filter>
+    </ClCompile>
+    <ClCompile Include="Sip\SubMsg.cpp">
+      <Filter>Sip</Filter>
+    </ClCompile>
+    <ClCompile Include="UdpM_G.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Device.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="drone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MonitorManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Catalog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Channel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Media\Es2Rtp.cpp">
+      <Filter>Media</Filter>
+    </ClCompile>
+    <ClCompile Include="Client.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rtcp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChannelMp4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Media\MeadiaPaser.cpp">
+      <Filter>Media</Filter>
+    </ClCompile>
+    <ClCompile Include="mqtt\CProduct.cpp">
+      <Filter>mqtt</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\cjson.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Http.cpp">
+      <Filter>http</Filter>
+    </ClCompile>
+    <ClCompile Include="Media\h26x_sps_parse\h26x_sps_parse.cpp">
+      <Filter>Media\h26x_sps_parse</Filter>
+    </ClCompile>
+    <ClCompile Include="Media\h26x_sps_parse\h264_avcc.cpp">
+      <Filter>Media\h26x_sps_parse</Filter>
+    </ClCompile>
+    <ClCompile Include="Media\h26x_sps_parse\h264_sei.cpp">
+      <Filter>Media\h26x_sps_parse</Filter>
+    </ClCompile>
+    <ClCompile Include="Media\h26x_sps_parse\h264_stream.cpp">
+      <Filter>Media\h26x_sps_parse</Filter>
+    </ClCompile>
+    <ClCompile Include="Media\h26x_sps_parse\h265_avcc.cpp">
+      <Filter>Media\h26x_sps_parse</Filter>
+    </ClCompile>
+    <ClCompile Include="Media\h26x_sps_parse\h265_sei.cpp">
+      <Filter>Media\h26x_sps_parse</Filter>
+    </ClCompile>
+    <ClCompile Include="Media\h26x_sps_parse\h265_stream.cpp">
+      <Filter>Media\h26x_sps_parse</Filter>
+    </ClCompile>
+    <ClCompile Include="Media\h26x_sps_parse\test_h26x_analyzer.cpp">
+      <Filter>Media\h26x_sps_parse</Filter>
+    </ClCompile>
+    <ClCompile Include="Media\ps_demux.cpp">
+      <Filter>Media</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
