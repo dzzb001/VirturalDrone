@@ -6,13 +6,13 @@
 
 #define Log LogN(3210)
 
-//rtcp½ÓÊÕ»º³åÇøµÄ´óÐ¡
+//rtcpï¿½ï¿½ï¿½Õ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½Ð¡
 #define RTCP_RECV_BUF_SIZE 1024
 
-//¶à³¤Ê±¼äÁ¬½Ó½¨Á¢²»³É¹¦¾ÍÈÏÎª½©ËÀ,µ¥Î»ºÁÃë
+//ï¿½à³¤Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ó½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½
 #define DEAD_THREASHOLD 60000
 
-//RtpÊ¹ÓÃµÄ¶Ë¿Ú×îÐ¡ÖµºÍ×î´óÖµ
+//RtpÊ¹ï¿½ÃµÄ¶Ë¿ï¿½ï¿½ï¿½Ð¡Öµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
 #define RTP_PORT_MIN 20000
 #define RTP_PORT_MAX 30000
 
@@ -21,17 +21,17 @@
 //RtpÍ·
 struct RtpHeader
 {
-	unsigned char CC				: 4;		//CSRCµÄ¸öÊý
-	unsigned char   X				: 1;		//À©Õ¹±êÖ¾Î»
-	unsigned char   P				: 1;		//Ìî³ä±êÖ¾Î»
-	unsigned char   version		: 2;		//°æ±¾ºÅ
+	unsigned char CC				: 4;		//CSRCï¿½Ä¸ï¿½ï¿½ï¿½
+	unsigned char   X				: 1;		//ï¿½ï¿½Õ¹ï¿½ï¿½Ö¾Î»
+	unsigned char   P				: 1;		//ï¿½ï¿½ï¿½ï¿½Ö¾Î»
+	unsigned char   version		: 2;		//ï¿½æ±¾ï¿½ï¿½
 
-	unsigned char   PT				: 7;		//¸ºÔØÀàÐÍ
-	unsigned char   M				: 1;		//±êÖ¾Î»(ÓÉ¾ßÌåÐ­ÒéÈ·¶¨)
+	unsigned char   PT				: 7;		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	unsigned char   M				: 1;		//ï¿½ï¿½Ö¾Î»(ï¿½É¾ï¿½ï¿½ï¿½Ð­ï¿½ï¿½È·ï¿½ï¿½)
 
-	unsigned short sn;						//ÐòÁÐºÅ
-	unsigned int timestamp;				//Ê±¼ä´Á
-	unsigned int SSRC;						//Í¬²½Ô´Ê¶±ð±êÊ¶·û
+	unsigned short sn;						//ï¿½ï¿½ï¿½Ðºï¿½
+	unsigned int timestamp;				//Ê±ï¿½ï¿½ï¿½
+	unsigned int SSRC;						//Í¬ï¿½ï¿½Ô´Ê¶ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½
 };
 
 #pragma pack()
@@ -78,8 +78,8 @@ CClient::~CClient(void)
 }
 
 void CClient::SetParam(
-	const std::string &strDevID,	//ËùÊôÉè±¸µÄID
-	const std::string &strPayload	//RtpµÄ¸ºÔØÊý¾ÝÀàÐÍ
+	const std::string &strDevID,	//ï¿½ï¿½ï¿½ï¿½ï¿½è±¸ï¿½ï¿½ID
+	const std::string &strPayload	//Rtpï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 )
 {
 	m_strDevID = strDevID;
@@ -87,9 +87,9 @@ void CClient::SetParam(
 }
 
 void CClient::SetParam(
-	const std::string &strDevID,	//ËùÊôÉè±¸µÄID
-	const std::string &strPayload,	//RtpµÄ¸ºÔØÊý¾ÝÀàÐÍ
-	const std::string &strRtspUrl	//Ç°¶ËÊÓÆµÔ´Éè±¸url
+	const std::string &strDevID,	//ï¿½ï¿½ï¿½ï¿½ï¿½è±¸ï¿½ï¿½ID
+	const std::string &strPayload,	//Rtpï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	const std::string &strRtspUrl	//Ç°ï¿½ï¿½ï¿½ï¿½ÆµÔ´ï¿½è±¸url
 )
 {
 	m_strDevID = strDevID;
@@ -97,7 +97,7 @@ void CClient::SetParam(
 	m_strRtspUrl = strRtspUrl;
 }
 
-//×¢²áRtp·¢ËÍÍ¨Öª»Øµ÷º¯Êý
+//×¢ï¿½ï¿½Rtpï¿½ï¿½ï¿½ï¿½Í¨Öªï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½
 void CClient::RegCB(CT_RtpNotify pfnRtp, CT_Addr pfnAddr, LPVOID lpContext)
 {
 	m_pfnRtp = pfnRtp;
@@ -105,13 +105,13 @@ void CClient::RegCB(CT_RtpNotify pfnRtp, CT_Addr pfnAddr, LPVOID lpContext)
 	m_lpContext = lpContext;
 }
 
-//ÃüÁîÊäÈë
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void CClient::CmdIn(Sip::CMsg* pCmd, Sip::CSubMsg *pSubCmd)
 {
 	std::string strCSeq = pCmd->GetHead("CSeq");
 	if (strCSeq == m_strCSeq)
 	{
-		//ÖØ·¢µÄÃüÁî£¬²»×ö´¦Àí
+		//ï¿½Ø·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½î£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		return;
 	}
 	bool bRet = false;
@@ -135,7 +135,7 @@ void CClient::CmdIn(Sip::CMsg* pCmd, Sip::CSubMsg *pSubCmd)
 	}
 }
 
-//¸Ã»á»°ÊÇ·ñÒÑ¾­¹Ø±Õ
+//ï¿½Ã»á»°ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½ï¿½Ø±ï¿½
 bool CClient::Dead()
 {
 	return (m_nState == eSBye ||
@@ -145,7 +145,7 @@ bool CClient::Dead()
 		);
 }
 
-//RtpÊý¾ÝÊäÈë
+//Rtpï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void CClient::RtpIn(char *pBuff, int nLen, int nPayloadLen)
 {
 	/*if (nLen > 1500)
@@ -155,10 +155,10 @@ void CClient::RtpIn(char *pBuff, int nLen, int nPayloadLen)
 		return;
 	}
 	RtpHeader *pHeader = (RtpHeader*)pBuff;
-	//Ö»ÐÞ¸ÄÊÓÆµPT
+	//åªä¿®æ”¹éŸ³é¢‘PT
 	if (pHeader->PT ==  96 || pHeader->PT == 98 || pHeader->PT == 35 || pHeader->PT == 27)
 	{
-		pHeader->PT = 98/*m_nPT*/;
+		pHeader->PT = m_nPT;
 	}
 	pHeader->SSRC = htonl(m_dwSSRC);
 	if (nullptr != m_pTcpActive)
@@ -170,11 +170,11 @@ void CClient::RtpIn(char *pBuff, int nLen, int nPayloadLen)
 			m_buffSend.resize(2);
 			*((unsigned short*)(&m_buffSend[0])) = htons((unsigned short)nLen);
 			m_buffSend.append(pBuff, nLen);
-			m_pTcpActive->Send(&m_buffSend[0], m_buffSend.size());
-			static int n = 0;
-			if (n++ < 10)
+			int nSend = m_pTcpActive->Send(&m_buffSend[0], m_buffSend.size());
+			//static int n = 0;
+			//if (n++ < 10)
 			{
-				Log("Send Len[%d]", m_buffSend.size());
+				//Log("Send Len[%d],nSend[%d]", m_buffSend.size(), nSend);
 			}
 		}
 		else {
@@ -192,6 +192,7 @@ void CClient::RtpIn(char *pBuff, int nLen, int nPayloadLen)
 	else
 	{
 		if (m_udpRtp) {
+			//Log(Tool::Debug, "UDP Send to %s:%d, len=%d", m_strRemoteIP.c_str(), m_nRemotePort, nLen);
 			m_udpRtp->Send(pBuff, nLen, m_strRemoteIP, m_nRemotePort);
 		}
 		m_Rtcp.RtpIn((BYTE*)pBuff, nLen, nPayloadLen);
@@ -205,7 +206,7 @@ void CClient::RtpIn(char *pBuff, int nLen, int nPayloadLen)
 			//	int nRecv = m_udpRtcp->((char*)&m_buffRtcp[0], RTCP_RECV_BUF_SIZE);
 			//	if (nRecv > 0)
 			//	{
-			//		//Log("½ÓÊÕµ½Rtcp°ü");
+			//		//Log("ï¿½ï¿½ï¿½Õµï¿½Rtcpï¿½ï¿½");
 			//		m_Rtcp.RtcpIn(&m_buffRtcp[0], nRecv);
 			//		continue;
 			//	}
@@ -215,12 +216,12 @@ void CClient::RtpIn(char *pBuff, int nLen, int nPayloadLen)
 	}
 }
 
-//Ö÷¶¯¹Ø±Õ
+//ï¿½ï¿½ï¿½ï¿½ï¿½Ø±ï¿½
 bool CClient::Close()
 {
-	//Ê×ÏÈÍ£Ö¹rtsp½ÓÊÕ
+	//ï¿½ï¿½ï¿½ï¿½Í£Ö¹rtspï¿½ï¿½ï¿½ï¿½
 	//m_rtsp->RtspStop();
-	//ÏÈÍ£Ö¹·¢ËÍRtp
+	//ï¿½ï¿½Í£Ö¹ï¿½ï¿½ï¿½ï¿½Rtp
 	if ( NULL != m_pfnRtp)
 	{
 		m_pfnRtp(m_lpContext, this, false);
@@ -240,7 +241,7 @@ bool CClient::Close()
 		m_pTcpPassive.reset();
 		m_pTcpPassive = nullptr;
 	}
-	//ÔÙÍ£Ö¹Rtcp
+	//ï¿½ï¿½Í£Ö¹Rtcp
 	/*if(m_Rtcp.GetRtcp(m_buffRtcp, true))
 	{
 		m_udpRtcp.SendInManual(&m_buffRtcp[0], m_buffRtcp.size());
@@ -249,7 +250,7 @@ bool CClient::Close()
 	//m_udpRtcp.Stop();
 
 
-	//ÔÙ·¢ËÍBYE
+	//ï¿½Ù·ï¿½ï¿½ï¿½BYE
 	if (eSAck == m_nState )
 	{
 		m_nState = eSBye;
@@ -269,12 +270,12 @@ void CClient::ClientIn(std::weak_ptr<CTcpClientBase> pClient)
 	m_pTcpPassive->RegCB(PassiveDataCB, nullptr, nullptr, nullptr);
 }
 
-//ÊÕµ½INVITEµÄ´¦Àí
+//ï¿½Õµï¿½INVITEï¿½Ä´ï¿½ï¿½ï¿½
 bool CClient::OnInvite(Sip::CMsgBase *pCmd, Sip::CSubMsgSdp *pCmdSdp)
 {
 	if (eSInit != m_nState)
 	{
-		Log(Tool::Warning, "[%s] ÊÕµ½²»ÆÚÍûµÄIVITE£¡State=<%d>", __FUNCTION__, m_nState);
+		Log(Tool::Warning, "[%s] ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½IVITEï¿½ï¿½State=<%d>", __FUNCTION__, m_nState);
 		Reply(Sip::eRForbidden, pCmd, (Sip::CSubMsg*)pCmdSdp);
 		return false;
 	}
@@ -296,7 +297,7 @@ bool CClient::OnInvite(Sip::CMsgBase *pCmd, Sip::CSubMsgSdp *pCmdSdp)
 	std::string strLocalIP = config.GetLocalIP();
 	int nRtpPort(0);
 	std::string strProtocol = "TCP/RTP/AVP";
-	std::string strMode = "passive";//±¾µØµÄÄ£Ê½
+	std::string strMode = "passive";//ï¿½ï¿½ï¿½Øµï¿½Ä£Ê½
 	std::string strRemoteIP;
 	unsigned short nRemotePort = 0;
 
@@ -337,7 +338,7 @@ bool CClient::OnInvite(Sip::CMsgBase *pCmd, Sip::CSubMsgSdp *pCmdSdp)
 	else
 	{
 		OutputDebugString("RTP/AVP\n");
-		//»ñÈ¡±¾µØRtpºÍRtcp¶Ë¿Ú
+		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Rtpï¿½ï¿½Rtcpï¿½Ë¿ï¿½
 		for (nRtpPort = s_nStartPort + 2; nRtpPort != s_nStartPort; nRtpPort += 2)
 		{
 			if (nRtpPort >= RTP_PORT_MAX)
@@ -346,7 +347,7 @@ bool CClient::OnInvite(Sip::CMsgBase *pCmd, Sip::CSubMsgSdp *pCmdSdp)
 				continue;
 			}
 
-			//´´½¨rtp udp¶ÔÏó²¢Æô¶¯
+			//ï¿½ï¿½ï¿½ï¿½rtp udpï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			if (!CreateUdp(nRtpPort, strLocalIP.c_str(), m_udpRtp, 0)) {
 				continue;
 			}
@@ -364,7 +365,7 @@ bool CClient::OnInvite(Sip::CMsgBase *pCmd, Sip::CSubMsgSdp *pCmdSdp)
 	}
 	if (/*nRtpPort == s_nStartPort ||*/ 0 == nRtpPort)
 	{
-		Log(Tool::Error, "»ñÈ¡Rtp·¢ËÍ¶Ë¿ÚÊ§°Ü£¡Mode<%s> RtpPort<%d> StartPort<%d>", pCmdSdp->m_strMode.c_str(), nRtpPort, s_nStartPort);
+		Log(Tool::Error, "ï¿½ï¿½È¡Rtpï¿½ï¿½ï¿½Í¶Ë¿ï¿½Ê§ï¿½Ü£ï¿½Mode<%s> RtpPort<%d> StartPort<%d>", pCmdSdp->m_strMode.c_str(), nRtpPort, s_nStartPort);
 		Reply(Sip::eRServerError, pCmd, (Sip::CSubMsg*)pCmdSdp);
 		return false;
 	}
@@ -373,7 +374,7 @@ bool CClient::OnInvite(Sip::CMsgBase *pCmd, Sip::CSubMsgSdp *pCmdSdp)
 		s_nStartPort = nRtpPort;
 	}
 
-	//½øÐÐÕý³£Ó¦´ð
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½
 	//std::unordered_map<std::string, std::string> mapMode = { {"active", "passive"},{"passive", "active"} };
 	Sip::CSubMsgSdp msgSubR;
 	msgSubR.SetParam(
@@ -416,12 +417,12 @@ bool CClient::OnInvite(Sip::CMsgBase *pCmd, Sip::CSubMsgSdp *pCmdSdp)
 	return true;
 }
 
-//ÊÕµ½ACKµÄ´¦Àí
+//ï¿½Õµï¿½ACKï¿½Ä´ï¿½ï¿½ï¿½
 bool CClient::OnAck(Sip::CMsgBase *pCmd, Sip::CSubMsg *pSubCmd)
 {
 	if (eSInvite != m_nState)
 	{
-		Log(Tool::Warning, "[%s] ÊÕµ½²»ÆÚÍûµÄACK£¡State=<%d>", __FUNCTION__, m_nState);
+		Log(Tool::Warning, "[%s] ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ACKï¿½ï¿½State=<%d>", __FUNCTION__, m_nState);
 		return false;
 	}
 	if (nullptr != pSubCmd)
@@ -449,7 +450,7 @@ bool CClient::OnAck(Sip::CMsgBase *pCmd, Sip::CSubMsg *pSubCmd)
 	{
 		m_pfnRtp(m_lpContext, this, true);
 	}
-	//ÏÈÉú³ÉÒ»¸öBYEÃüÁî£¬ÒÔ±¸ºóÓÃ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½BYEï¿½ï¿½ï¿½î£¬ï¿½Ô±ï¿½ï¿½ï¿½ï¿½ï¿½
 	Config::CConfig &config = Config::CConfig::GetInstance();
 	Sip::CMsgBye msgBye;
 	msgBye.SetParam(pCmd->m_From.strID, pCmd->m_From.strTag, pCmd->m_To.strID,
@@ -464,14 +465,14 @@ bool CClient::OnAck(Sip::CMsgBase *pCmd, Sip::CSubMsg *pSubCmd)
 
 bool CClient::OnBye(Sip::CMsgBase *pCmd, Sip::CSubMsg *pSubCmd)
 {
-	//ÏÈÍ£Ö¹·¢ËÍRtp
+	//ï¿½ï¿½Í£Ö¹ï¿½ï¿½ï¿½ï¿½Rtp
 	if (eSAck == m_nState && NULL != m_pfnRtp)
 	{
 		m_pfnRtp(m_lpContext, this, false);
 	}
 
 	m_nState = eSBye;
-	//ÔÚ·¢ËÍ³É¹¦Ó¦´ð
+	//ï¿½Ú·ï¿½ï¿½Í³É¹ï¿½Ó¦ï¿½ï¿½
 	Reply(Sip::eROK, pCmd, pSubCmd);
 	return true;
 }
@@ -485,7 +486,7 @@ bool CClient::CheckSdp(Sip::CMsgBase *pCmd, Sip::CSubMsgSdp *pCmdSdp)
 		|| pCmdSdp->m_strIP.empty() || 0 == pCmdSdp->m_nRtpPort
 		)
 	{
-		Log(Tool::Error, "[%s]SdpÐÅÏ¢ÓÐÎó - 1 £¡SSRC<%s>, Type<%s> PlayType<%s> IP<%s> Port<%d>", __FUNCTION__,
+		Log(Tool::Error, "[%s]Sdpï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ - 1 ï¿½ï¿½SSRC<%s>, Type<%s> PlayType<%s> IP<%s> Port<%d>", __FUNCTION__,
 			pCmdSdp->m_strSSRC.c_str(), pCmdSdp->m_strType.c_str(), pCmdSdp->m_strPlayType.c_str(), pCmdSdp->m_strIP.c_str(), pCmdSdp->m_nRtpPort);
 		return false;
 	}
@@ -499,16 +500,12 @@ bool CClient::CheckSdp(Sip::CMsgBase *pCmd, Sip::CSubMsgSdp *pCmdSdp)
 			m_nPT = it->first;
 			return true;
 		}
-		else {
-			m_nPT = 96;
-			return true;
-		}
 	}
-	Log(Tool::Error, "[%s]SdpÐÅÏ¢ÓÐÎó- 2 £¡", __FUNCTION__);
-	return false;
+	m_nPT = 96;
+	return true;
 }
 
-//Ó¦´ðÃüÁî
+//Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 bool CClient::Reply(int nReply, Sip::CMsg *pCmd, Sip::CSubMsg *pSubCmd, const std::string &strContent/* ="" */)
 {
 	Sip::CMsgRBase *pMsg = NULL;
@@ -529,7 +526,7 @@ bool CClient::Reply(int nReply, Sip::CMsg *pCmd, Sip::CSubMsg *pSubCmd, const st
 	std::shared_ptr<CUdpM> pUdpM = Tool::CUdpM_G::GetInstance().GetUdpInstance();
 	if (!pUdpM->Send(pMsg->Str().c_str(), pMsg->Str().size(), Tool::CUdpM_G::GetInstance().GetServerIP(), Tool::CUdpM_G::GetInstance().GetServerPort()))
 	{
-		Log(Tool::Error, "[%s]·¢ËÍÓ¦´ðÊ§°Ü£¡", __FUNCTION__);
+		Log(Tool::Error, "[%s]ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½Ê§ï¿½Ü£ï¿½", __FUNCTION__);
 		delete pMsg;
 		return false;
 	}
@@ -538,7 +535,7 @@ bool CClient::Reply(int nReply, Sip::CMsg *pCmd, Sip::CSubMsg *pSubCmd, const st
 
 }
 
-//´´½¨rtp¶ÔÏó²¢³õÊ¼»¯
+//ï¿½ï¿½ï¿½ï¿½rtpï¿½ï¿½ï¿½ó²¢³ï¿½Ê¼ï¿½ï¿½
 bool CClient::CreateUdp(int nPort, std::string strLocalIP, std::shared_ptr<CUdpM> &udp, int nType)
 {
 	udp = CUdpM::Create<CUdpM>();
@@ -576,7 +573,7 @@ bool CClient::DestoryUdp(std::shared_ptr<CUdpM> &udp)
 	return true;
 }
 
-//rtp Êý¾Ý»Øµ÷
+//rtp ï¿½ï¿½ï¿½Ý»Øµï¿½
 void CClient::RtpUdpDataCB(std::shared_ptr<void> pContext, const char *pData, int nLen, const std::string &strFromIP, short nFromPort)
 {
 	CClient *pThis = (CClient*)(pContext.get());
@@ -586,7 +583,7 @@ void CClient::RtpUdpDataCB(std::shared_ptr<void> pContext, const char *pData, in
 	}
 }
 
-//rtcp Êý¾Ý»Øµ÷
+//rtcp ï¿½ï¿½ï¿½Ý»Øµï¿½
 void CClient::RtcpUdpDataCB(std::shared_ptr<void> pContext, const char *pData, int nLen, const std::string &strFromIP, short nFromPort)
 {
 	CClient *pThis = (CClient*)(pContext.get());
@@ -594,19 +591,19 @@ void CClient::RtcpUdpDataCB(std::shared_ptr<void> pContext, const char *pData, i
 	{
 		if (nLen > 0)
 		{
-			Log("½ÓÊÕµ½Rtcp°ü");
+			Log("ï¿½ï¿½ï¿½Õµï¿½Rtcpï¿½ï¿½");
 			pThis->m_Rtcp.RtcpIn((unsigned char *)pData, nLen);
 			pThis->m_dwLastRtcp = GetTickCount(); 
 		}
 		else {
-			Log("½ÓÊÕµ½Rtcp 0°ü");
-			pThis->m_dwLastRtcp = GetTickCount();//add at 20231017,ÓîÊÓnvr²»Ö§³Örtcp,Òò´ËÓîÊÓ²»ÅÐ¶ÏÊÇ·ñÊÕµ½rtcp°ü
+			Log("ï¿½ï¿½ï¿½Õµï¿½Rtcp 0ï¿½ï¿½");
+			pThis->m_dwLastRtcp = GetTickCount();//add at 20231017,ï¿½ï¿½ï¿½ï¿½nvrï¿½ï¿½Ö§ï¿½ï¿½rtcp,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó²ï¿½ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½Õµï¿½rtcpï¿½ï¿½
 		}
 	}
 }
 
-void CClient::RtpDataCB(void*  lpContext,	//»·¾³±äÁ¿
-	unsigned char *pData,						//·¢³öÍ¨ÖªµÄ¿Í»§¶ËÖ¸Õë
+void CClient::RtpDataCB(void*  lpContext,	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	unsigned char *pData,						//ï¿½ï¿½ï¿½ï¿½Í¨Öªï¿½Ä¿Í»ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
 	unsigned int nSize
 )
 {
@@ -617,7 +614,7 @@ void CClient::RtpDataCB(void*  lpContext,	//»·¾³±äÁ¿
 	}
 }
 
-//ÉèÖÃrtspÏò¿Í»§µÄ·¢ËÍrtpÊý¾Ý
+//ï¿½ï¿½ï¿½ï¿½rtspï¿½ï¿½Í»ï¿½ï¿½Ä·ï¿½ï¿½ï¿½rtpï¿½ï¿½ï¿½ï¿½
 /*
 void CClient::AttchRtsp(std::shared_ptr<CRtspClient> pRtsp)
 {
@@ -626,10 +623,10 @@ void CClient::AttchRtsp(std::shared_ptr<CRtspClient> pRtsp)
 }
 */
 
-//½ÓÊÕµ½Êý¾ÝµÄ»Øµ÷º¯Êý£¬·µ»ØÒÑ¾­´¦ÀíµÄÊý¾Ý³¤¶È£¨ËµÃ÷£ºÒÑ¾­±»´¦ÀíµÄÊý¾Ý£¬½«ÔÚ±»¶ÔÏóÄÚ²¿É¾³ý£©
+//ï¿½ï¿½ï¿½Õµï¿½ï¿½ï¿½ï¿½ÝµÄ»Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý³ï¿½ï¿½È£ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ï¿½Ú±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½É¾ï¿½ï¿½ï¿½ï¿½
 int CClient::ActiveDataCB(
-	std::shared_ptr<CContextBase> pContext,		//»·¾³±äÁ¿
-	Tool::TBuff<char> &Data							//½ÓÊÕµ½µÄÊý¾Ý»º³å
+	std::shared_ptr<CContextBase> pContext,		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	Tool::TBuff<char> &Data							//ï¿½ï¿½ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý»ï¿½ï¿½ï¿½
 )
 {
 	return Rfc4571(&Data[0], Data.size());
@@ -638,9 +635,9 @@ int CClient::ActiveDataCB(
 }
 
 int CClient::PassiveDataCB (
-	std::shared_ptr<CContextBase> pContext,		//»·¾³±äÁ¿
-	Tool::TBuff<char> &Data,					//½ÓÊÕµ½µÄÊý¾Ý»º³å
-	std::weak_ptr<CContextBase> pTcp			//½ÓÊÕÕß±¾ÉíµÄÖ¸Õë
+	std::shared_ptr<CContextBase> pContext,		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	Tool::TBuff<char> &Data,					//ï¿½ï¿½ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý»ï¿½ï¿½ï¿½
+	std::weak_ptr<CContextBase> pTcp			//ï¿½ï¿½ï¿½ï¿½ï¿½ß±ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
 	)
 {
 	return Rfc4571(&Data[0], Data.size());
@@ -648,7 +645,7 @@ int CClient::PassiveDataCB (
 
 int CClient::Rfc4571(char *pData, size_t nLen)
 {
-	//²ð°ü
+	//ï¿½ï¿½ï¿½
 	int nEaten = 0;
 	while (nEaten + sizeof(unsigned short) + sizeof(RtpHeader) < nLen)
 	{
@@ -659,10 +656,10 @@ int CClient::Rfc4571(char *pData, size_t nLen)
 		}
 		const char *pRtp = pData + nEaten + sizeof(unsigned short);
 		RtpHeader *pHeader = (RtpHeader*)pRtp;
-		if (pHeader->version != 2)//rtpµÄversionÎª2
+		if (pHeader->version != 2)//rtpï¿½ï¿½versionÎª2
 		{
-			Log("[CRfc4571::ExeInputAsSrc]Ê§È¥Í¬²½");
-			return nLen;//Ê§È¥Í¬²½
+			Log("[CRfc4571::ExeInputAsSrc]Ê§È¥Í¬ï¿½ï¿½");
+			return nLen;//Ê§È¥Í¬ï¿½ï¿½
 		}
 		nEaten += nRtpLen + sizeof(unsigned short);
 		Log("Rtp -- sn<%d>", htons(pHeader->sn));
@@ -672,8 +669,8 @@ int CClient::Rfc4571(char *pData, size_t nLen)
 }
 
 void CClient::tcpStartCallback(
-	std::shared_ptr<void> pContext,	//»·¾³±äÁ¿
-	int nTimer				//¶¨Ê±Æ÷ID
+	std::shared_ptr<void> pContext,	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	int nTimer				//ï¿½ï¿½Ê±ï¿½ï¿½ID
 )
 {
 	CClient *pThis = (CClient *)pContext.get();

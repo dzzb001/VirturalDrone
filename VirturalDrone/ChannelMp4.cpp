@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "ChannelMp4.h"
 
 #define Log LogN(4002)
@@ -11,7 +11,7 @@ CChannelMp4::CChannelMp4(const std::string &strDevID, const std::string &strID,
 	m_pFileStream = std::make_shared<CMeadiaPaser>();
 	m_strPayload = "H264";
 
-	//Æô¶¯mqttÊı¾İ·¢ËÍ
+	//å¯åŠ¨mqttæ•°æ®å‘é€
 	m_pFileStream->InitMqtt(strID);
 }
 
@@ -25,21 +25,21 @@ CChannelMp4::~CChannelMp4()
 
 //
 
-//ÃüÁîÊäÈë
+//å‘½ä»¤è¾“å…¥
 void CChannelMp4::CmdIn(Sip::CMsg* pCmd, Sip::CSubMsg *pSubCmd)
 {
 	if (pCmd->m_To.strID != m_strID)
 	{
-		Log(Tool::Warning, "[%s] Invite ÃüÁîµÄToID<%s> != ±¾Í¨µÀID<%s>£¬¶ªÆú£¡", __FUNCTION__,
+		Log(Tool::Warning, "[%s] Invite å‘½ä»¤çš„ToID<%s> != æœ¬é€šé“ID<%s>ï¼Œä¸¢å¼ƒï¼", __FUNCTION__,
 			pCmd->m_To.strID.c_str(), m_strID.c_str());
 		return;
 	}
 	else {
-		Log("[%s] Invite ÃüÁîµÄToID<%s>, ±¾Í¨µÀID<%s>£¬¶ªÆú£¡", __FUNCTION__,
+		Log("[%s] Invite å‘½ä»¤çš„ToID<%s>, æœ¬é€šé“ID<%s>ï¼Œå¼€å§‹å¤„ç†ï¼", __FUNCTION__,
 			pCmd->m_To.strID.c_str(), m_strID.c_str());
 	}
 
-	//³Ã»úÏÈ¼ì²éÏÂÓĞÃ»ÓĞ½©ËÀµÄ»á»°
+	//è¶æœºå…ˆæ£€æŸ¥ä¸‹æœ‰æ²¡æœ‰åƒµæ­»çš„ä¼šè¯
 	std::vector<std::string> vecDeadCallID;
 	for (ClientMap::iterator it = m_mapClient.begin(); it != m_mapClient.end(); ++it)
 	{
@@ -50,16 +50,16 @@ void CChannelMp4::CmdIn(Sip::CMsg* pCmd, Sip::CSubMsg *pSubCmd)
 	}
 	for (size_t i = 0; i < vecDeadCallID.size(); ++i)
 	{
-		Log(Tool::Info, "[%s]»á»°<%s>ÒÑËÀ£¬½«±»É¾³ı£¡", __FUNCTION__, vecDeadCallID[i].c_str());
+		Log(Tool::Info, "[%s]ä¼šè¯<%s>å·²æ­»ï¼Œå°†è¢«åˆ é™¤ï¼", __FUNCTION__, vecDeadCallID[i].c_str());
 		Delete(vecDeadCallID[i]);
 	}
 
-	//Á¢Âí·µ»Øtring
+	//ç«‹é©¬è¿”å›tring
 	if (Sip::eCmdInvite == pCmd->m_nType)
 		Reply(Sip::eRTrying, pCmd, pSubCmd);
 	
-	//ÔÙ´¦ÀíÃüÁî
-	if (Sip::eCmdInvite == pCmd->m_nType && m_pFileStream && m_pFileStream->Start(m_strRtspUrl.c_str()))
+	//å†å¤„ç†å‘½ä»¤
+	if (Sip::eCmdInvite == pCmd->m_nType && m_pFileStream && m_pFileStream->Start(m_strRtspUrl.c_str()) != 0)
 	{
 		Reply(Sip::eRNotFound, pCmd, pSubCmd);
 		if (m_pFileStream) {
@@ -73,10 +73,10 @@ void CChannelMp4::CmdIn(Sip::CMsg* pCmd, Sip::CSubMsg *pSubCmd)
 	}
 	ExeCmd(pCmd, pSubCmd);
 
-	////Ã»ÓĞ¿Í»§¶Ë¹Û¿´ÁË¾Í°ÑÊÓÆµÔ´¹Øµô
+	////æ²¡æœ‰å®¢æˆ·ç«¯è§‚çœ‹äº†å°±æŠŠè§†é¢‘æºå…³æ‰
 	if (m_mapClient.empty())
 	{
-		Log(Tool::Info, "[%s]±¾Í¨µÀÃ»ÓĞ¿Í»§¶ËÁË£¬¹Ø±ÕÊı¾İÔ´£¡", m_strRtspUrl.c_str());
+		Log(Tool::Info, "[%s]æœ¬é€šé“æ²¡æœ‰å®¢æˆ·ç«¯äº†ï¼Œå…³é—­æ•°æ®æºï¼", m_strRtspUrl.c_str());
 		if (m_pFileStream) {
 			m_pFileStream->Stop();
 			m_pFileStream->EndMqtt();
@@ -101,7 +101,7 @@ void CChannelMp4::ClientIn(std::weak_ptr<CTcpClientBase> pClient, const std::str
 	}
 }
 
-//¹Ø±ÕÍ¨µÀ£¬ÒÑ¹Ø±Õ³É¹¦·µ»Øtrue£¬·ñÔò·µ»Øfalse
+//å…³é—­é€šé“ï¼Œå·²å…³é—­æˆåŠŸè¿”å›trueï¼Œå¦åˆ™è¿”å›false
 bool CChannelMp4::Close()
 {
 	//Log("[%s] ID<%s>", __FUNCTION__, m_strID.c_str());
@@ -127,15 +127,15 @@ bool CChannelMp4::Close()
 }
 
 /*******************************************************************************
-*¹¦    ÄÜ:	Ö´ĞĞÒì²½SipÃüÁî
-*ÊäÈë²ÎÊı:	mapClient		-- CallID -> ·¢ËÍ¿Í»§¶Ë ÁĞ±í
-*			mapSubject		-- Subject -> CallID ÁĞ±í
-*Êä³ö²ÎÊı:
-*·µ »Ø Öµ£º	ÎŞ
-*ÆäËüËµÃ÷:
-*ĞŞ¸ÄÈÕÆÚ	ĞŞ¸ÄÈË			ĞŞ¸ÄÄÚÈİ
+*åŠŸ    èƒ½:	æ‰§è¡Œå¼‚æ­¥Sipå‘½ä»¤
+*è¾“å…¥å‚æ•°:	mapClient		-- CallID -> å‘é€å®¢æˆ·ç«¯ åˆ—è¡¨
+*			mapSubject		-- Subject -> CallID åˆ—è¡¨
+*è¾“å‡ºå‚æ•°:
+*è¿” å› å€¼ï¼š	æ— 
+*å…¶å®ƒè¯´æ˜:
+*ä¿®æ”¹æ—¥æœŸ	ä¿®æ”¹äºº			ä¿®æ”¹å†…å®¹
 --------------------------------------------------------------------------------
-2016-8-11	ÕÅ±ó			´´½¨
+2016-8-11	å¼ æ–Œ			åˆ›å»º
 *******************************************************************************/
 void CChannelMp4::ExeCmd(Sip::CMsg *pCmd, Sip::CSubMsg *pSubCmd)
 {
@@ -145,7 +145,7 @@ void CChannelMp4::ExeCmd(Sip::CMsg *pCmd, Sip::CSubMsg *pSubCmd)
 	{
 		if (Sip::eCmdInvite != pCmd->m_nType)
 		{
-			Log(Tool::Warning, "[%s]ÕÒ²»µ½ÃüÁîËùÊôµÄCallIDĞÅÏ¢£¡", __FUNCTION__);
+			Log(Tool::Warning, "[%s]æ‰¾ä¸åˆ°å‘½ä»¤æ‰€å±çš„CallIDä¿¡æ¯ï¼", __FUNCTION__);
 			if (Sip::eCmdBye == pCmd->m_nType)
 			{
 				Reply(Sip::eRForbidden, pCmd, pSubCmd);
@@ -153,7 +153,7 @@ void CChannelMp4::ExeCmd(Sip::CMsg *pCmd, Sip::CSubMsg *pSubCmd)
 			return;
 		}
 
-		//¼ì²éÓĞÃ»ÓĞĞèÒªÍ£µôµÄÖØ¸´¿Í»§¶Ë
+		//æ£€æŸ¥æœ‰æ²¡æœ‰éœ€è¦åœæ‰çš„é‡å¤å®¢æˆ·ç«¯
 		std::string strSubject = pCmd->GetHead("Subject");
 		std::unordered_map<std::string, std::string> ::iterator itSubject = m_mapSubject.find(strSubject);
 		if (m_mapSubject.end() != itSubject)
@@ -161,7 +161,7 @@ void CChannelMp4::ExeCmd(Sip::CMsg *pCmd, Sip::CSubMsg *pSubCmd)
 			Delete(itSubject->second);
 		}
 
-		//ĞÂ½¨Ò»¸ö¿Í»§¶Ë
+		//æ–°å»ºä¸€ä¸ªå®¢æˆ·ç«¯
 		m_mapSubject[strSubject] = strCallID;
 		
 		auto pClient = CContextBase::Create<CClient>();
@@ -178,14 +178,14 @@ void CChannelMp4::ExeCmd(Sip::CMsg *pCmd, Sip::CSubMsg *pSubCmd)
 }
 
 /*******************************************************************************
-*¹¦    ÄÜ:	É¾³ıÒ»¸ö¿Í»§¶Ë
-*ÊäÈë²ÎÊı:	strCallID		-- ÒªÉ¾³ı¿Í»§¶ËµÄID
-*Êä³ö²ÎÊı:
-*·µ »Ø Öµ£º
-*ÆäËüËµÃ÷:	ÊäÈë²ÎÊıstrCallID£¬²»ÒªÊ¹ÓÃÒıÓÃ£¬ÒÔ·ÀÖ¹±»É¾³ıºóÔÙÒıÓÃ³ö´í¡£
-*ĞŞ¸ÄÈÕÆÚ	ĞŞ¸ÄÈË			ĞŞ¸ÄÄÚÈİ
+*åŠŸ    èƒ½:	åˆ é™¤ä¸€ä¸ªå®¢æˆ·ç«¯
+*è¾“å…¥å‚æ•°:	strCallID		-- è¦åˆ é™¤å®¢æˆ·ç«¯çš„ID
+*è¾“å‡ºå‚æ•°:
+*è¿” å› å€¼ï¼š
+*å…¶å®ƒè¯´æ˜:	è¾“å…¥å‚æ•°strCallIDï¼Œä¸è¦ä½¿ç”¨å¼•ç”¨ï¼Œä»¥é˜²æ­¢è¢«åˆ é™¤åå†å¼•ç”¨å‡ºé”™ã€‚
+*ä¿®æ”¹æ—¥æœŸ	ä¿®æ”¹äºº			ä¿®æ”¹å†…å®¹
 --------------------------------------------------------------------------------
-2016-8-15	ÕÅ±ó			´´½¨
+2016-8-15	å¼ æ–Œ			åˆ›å»º
 *******************************************************************************/
 void CChannelMp4::Delete(std::string strCallID)
 {
@@ -238,7 +238,7 @@ void CChannelMp4::RtpNotifyCB(LPVOID lpContext, void *pClient, bool bStart)
 }
 
 
-//Ó¦´ğÃüÁî
+//åº”ç­”å‘½ä»¤
 void CChannelMp4::Reply(int nReply, Sip::CMsg *pCmd, Sip::CSubMsg *pSubCmd, const std::string &strContent/* ="" */)
 {
 	Sip::CMsgRBase msg;
@@ -247,19 +247,19 @@ void CChannelMp4::Reply(int nReply, Sip::CMsg *pCmd, Sip::CSubMsg *pSubCmd, cons
 	std::shared_ptr<CUdpM> pUdpM = Tool::CUdpM_G::GetInstance().GetUdpInstance();
 	if (!pUdpM->Send(msg.Str().c_str(), msg.Str().size(), Tool::CUdpM_G::GetInstance().GetServerIP(), Tool::CUdpM_G::GetInstance().GetServerPort()))
 	{
-		Log(Tool::Error, "[%s]·¢ËÍÓ¦´ğÊ§°Ü£¡", __FUNCTION__);
+		Log(Tool::Error, "[%s]å‘é€åº”ç­”å¤±è´¥ï¼", __FUNCTION__);
 	}
 }
 
 /*******************************************************************************
-*¹¦    ÄÜ:	½âÎöÎÄ¼şÀàĞÍ×Ö·û´®£¬ĞÎÈç£ºPS/pcap
-*ÊäÈë²ÎÊı:	str				-- ´ı½âÎöµÄ×Ö·û´®
-*Êä³ö²ÎÊı: 	vec				-- ½âÎö³öµÄ×Ó×Ö·û´®
-*·µ »Ø Öµ£º
-*ÆäËüËµÃ÷:	¸ù¾İ"/"·Ö¸ô
-*ĞŞ¸ÄÈÕÆÚ	ĞŞ¸ÄÈË			ĞŞ¸ÄÄÚÈİ
+*åŠŸ    èƒ½:	è§£ææ–‡ä»¶ç±»å‹å­—ç¬¦ä¸²ï¼Œå½¢å¦‚ï¼šPS/pcap
+*è¾“å…¥å‚æ•°:	str				-- å¾…è§£æçš„å­—ç¬¦ä¸²
+*è¾“å‡ºå‚æ•°: 	vec				-- è§£æå‡ºçš„å­å­—ç¬¦ä¸²
+*è¿” å› å€¼ï¼š
+*å…¶å®ƒè¯´æ˜:	æ ¹æ®"/"åˆ†éš”
+*ä¿®æ”¹æ—¥æœŸ	ä¿®æ”¹äºº			ä¿®æ”¹å†…å®¹
 --------------------------------------------------------------------------------
-2016-10-19	ÕÅ±ó			´´½¨
+2016-10-19	å¼ æ–Œ			åˆ›å»º
 *******************************************************************************/
 void CChannelMp4::SpliteStr(const std::string str, std::vector<std::string> &vec)
 {
@@ -291,7 +291,7 @@ void CChannelMp4::AddrCB(LPVOID lpContext, const std::string &strCallID, const s
 
 void CChannelMp4::CheckClient()
 {
-	//¼ì²éÏÂÓĞÃ»ÓĞ½©ËÀµÄ»á»°
+	//æ£€æŸ¥ä¸‹æœ‰æ²¡æœ‰åƒµæ­»çš„ä¼šè¯
 	std::vector<std::string> vecDeadCallID;
 	for (ClientMap::iterator it = m_mapClient.begin(); it != m_mapClient.end(); ++it)
 	{
@@ -303,11 +303,11 @@ void CChannelMp4::CheckClient()
 
 	for (size_t i = 0; i < vecDeadCallID.size(); ++i)
 	{
-		Log(Tool::Info, "[%s]»á»°<%s>ÒÑËÀ£¬½«±»É¾³ı£¡", __FUNCTION__, vecDeadCallID[i].c_str());
+		Log(Tool::Info, "[%s]ä¼šè¯<%s>å·²æ­»ï¼Œå°†è¢«åˆ é™¤ï¼", __FUNCTION__, vecDeadCallID[i].c_str());
 		Delete(vecDeadCallID[i]);
 	}
 	//Log(Tool::Info, "CheckClient %s", m_strRtspUrl.c_str());
-	//Ã»ÓĞ¿Í»§¶Ë¹Û¿´ÁË¾Í°ÑÊÓÆµÔ´¹Øµô
+	//æ²¡æœ‰å®¢æˆ·ç«¯è§‚çœ‹äº†å°±æŠŠè§†é¢‘æºå…³æ‰
 	if (m_mapClient.empty())
 	{
 		if (m_pFileStream) {

@@ -7,7 +7,7 @@
 namespace Media
 {
 
-//¹¹Ôì
+//ï¿½ï¿½ï¿½ï¿½
 CEs2Rtp::CEs2Rtp(void)
 {
 	m_pfnRtp = NULL;
@@ -17,12 +17,12 @@ CEs2Rtp::CEs2Rtp(void)
 	m_eEncodeType = H264;
 }
 
-//Îö¹¹
+//ï¿½ï¿½ï¿½ï¿½
 CEs2Rtp::~CEs2Rtp(void)
 {
 }
 
-//Çå¿Õ²ÎÊý
+//ï¿½ï¿½Õ²ï¿½ï¿½ï¿½
 void CEs2Rtp::Reset()
 {
 	{
@@ -36,17 +36,17 @@ void CEs2Rtp::Reset()
 }
 
 /*******************************************************************************
-* º¯ÊýÃû³Æ£º	
-* ¹¦ÄÜÃèÊö£º	ÊäÈëES
-* ÊäÈë²ÎÊý£º	pEs				-- ESÊý¾ÝÖ¸Õë
-*				nLen			-- ESÊý¾Ý³¤¶È
-*				nDTS			-- ESÊý¾ÝµÄDTS
-* Êä³ö²ÎÊý£º	
-* ·µ »Ø Öµ£º	ÎÞ¡£
-* ÆäËüËµÃ÷£º	
-* ÐÞ¸ÄÈÕÆÚ		ÐÞ¸ÄÈË			ÐÞ¸ÄÄÚÈÝ
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½	
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	ï¿½ï¿½ï¿½ï¿½ES
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	pEs				-- ESï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
+*				nLen			-- ESï¿½ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
+*				nDTS			-- ESï¿½ï¿½ï¿½Ýµï¿½DTS
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	
+* ï¿½ï¿½ ï¿½ï¿½ Öµï¿½ï¿½	ï¿½Þ¡ï¿½
+* ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½	
+* ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½		ï¿½Þ¸ï¿½ï¿½ï¿½			ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½
 * ------------------------------------------------------------------------------
-* 2013-07-19	ÕÅ±ó	      	´´½¨
+* 2013-07-19	ï¿½Å±ï¿½	      	ï¿½ï¿½ï¿½ï¿½
 *******************************************************************************/
 void CEs2Rtp::EsIn(BYTE *pEs, int nLen, UINT nDTS)
 {
@@ -59,11 +59,11 @@ void CEs2Rtp::EsIn(BYTE *pEs, int nLen, UINT nDTS)
 	}else
 		fwrite(pEs, nLen, 1, pFile);*/
 
-	//ÕÒ³öËùÓÐµÄÆðÊ¼Âë
+	//ï¿½Ò³ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
 	std::vector<std::pair<int, int> > vecStart;
 	for (int i = 0; i+2 < nLen; ++i)
 	{
-		//ÓÅÏÈÕÒ00 00 00 01ÕâÖÖÆðÊ¼Âë
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½00 00 00 01ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
 		if (i + 3 < nLen)
 		{
 			if (0 == pEs[i] && 0 == pEs[i + 1] && 0 == pEs[i + 2] && 1 == pEs[i + 3])
@@ -74,7 +74,7 @@ void CEs2Rtp::EsIn(BYTE *pEs, int nLen, UINT nDTS)
 			}
 		}
 
-		//²»ÊÇ 00 00 00 01£¬¾Í¿´ÏÂÊÇ²»ÊÇ00 00 01ÕâÖÖÆðÊ¼Âë
+		//ï¿½ï¿½ï¿½ï¿½ 00 00 00 01ï¿½ï¿½ï¿½Í¿ï¿½ï¿½ï¿½ï¿½Ç²ï¿½ï¿½ï¿½00 00 01ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
 		if (0 == pEs[i] && 0 == pEs[i + 1] && 1 == pEs[i + 2])
 		{
 			vecStart.push_back(std::make_pair(i, 3));
@@ -82,7 +82,7 @@ void CEs2Rtp::EsIn(BYTE *pEs, int nLen, UINT nDTS)
 		}
 	}
 
-	//Èç¹ûNALµ¥Ôª»º³åÖÐÒÑ¾­ÓÐÊý¾ÝÁË£¬Ôò°ÑµÚÒ»¸öÆðÊ¼ÂëÇ°µÄÊý¾Ý·Åµ½»º³å
+	//ï¿½ï¿½ï¿½NALï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë£ï¿½ï¿½ï¿½Ñµï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Ý·Åµï¿½ï¿½ï¿½ï¿½ï¿½
 	if (m_buffNalu.size() > 0)
 	{
 		int nDataLen = vecStart.empty() ? nLen : vecStart[0].first;
@@ -90,7 +90,7 @@ void CEs2Rtp::EsIn(BYTE *pEs, int nLen, UINT nDTS)
 	}
 	for (size_t i = 0; i < vecStart.size(); ++i)
 	{
-		//°ÑÖ®Ç°µÄNAL´ò°ü·¢ËÍ
+		//ï¿½ï¿½Ö®Ç°ï¿½ï¿½NALï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if (m_eEncodeType == H264)
 		{
 			Nalu(nDTS);	
@@ -100,15 +100,15 @@ void CEs2Rtp::EsIn(BYTE *pEs, int nLen, UINT nDTS)
 			Nalu_hevc(nDTS);
 		}
 
-		//ÊÕ¼¯ÐÂµÄNALµ¥Ôª¼°ÆäÊ±¼ä´Á
+		//ï¿½Õ¼ï¿½ï¿½Âµï¿½NALï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½
 		m_RtpHeader.timestamp = htonl(nDTS);
-		int nStartPos = vecStart[i].first + vecStart[i].second;	//Ìø¹ýÆðÊ¼Âë
+		int nStartPos = vecStart[i].first + vecStart[i].second;	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
 		int nDataLen = i+1 >= vecStart.size() ? nLen-nStartPos : vecStart[i+1].first-nStartPos;
 		m_buffNalu.append(pEs+nStartPos, nDataLen);
 	}
 }
 
-//×¢²áRTP°üÊä³ö»Øµ÷º¯Êý
+//×¢ï¿½ï¿½RTPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½
 void CEs2Rtp::RegRtp(CT_Rtp pfn, LPVOID lpContext )
 {
 	m_pfnRtp = pfn;
@@ -116,16 +116,16 @@ void CEs2Rtp::RegRtp(CT_Rtp pfn, LPVOID lpContext )
 }
 
 /*******************************************************************************
-* º¯ÊýÃû³Æ£º	
-* ¹¦ÄÜÃèÊö£º	»ñÈ¡sps¡¢pps
-* ÊäÈë²ÎÊý£º	
-* Êä³ö²ÎÊý£º	sps				-- sps»º³åÇø
-*				pps				-- pps»º³åÇø
-* ·µ »Ø Öµ£º	»ñÈ¡³É¹¦·µ»ØTRUE£¬·ñÔò·µ»ØFALSE¡£
-* ÆäËüËµÃ÷£º	
-* ÐÞ¸ÄÈÕÆÚ		ÐÞ¸ÄÈË			ÐÞ¸ÄÄÚÈÝ
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½	
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	ï¿½ï¿½È¡spsï¿½ï¿½pps
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	sps				-- spsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+*				pps				-- ppsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+* ï¿½ï¿½ ï¿½ï¿½ Öµï¿½ï¿½	ï¿½ï¿½È¡ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½TRUEï¿½ï¿½ï¿½ï¿½ï¿½ò·µ»ï¿½FALSEï¿½ï¿½
+* ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½	
+* ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½		ï¿½Þ¸ï¿½ï¿½ï¿½			ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½
 * ------------------------------------------------------------------------------
-* 2013-07-19	ÕÅ±ó	      	´´½¨
+* 2013-07-19	ï¿½Å±ï¿½	      	ï¿½ï¿½ï¿½ï¿½
 *******************************************************************************/
 BOOL CEs2Rtp::GetSPPS(Tool::TBuff<BYTE> &sps, Tool::TBuff<BYTE> &pps )
 {
@@ -136,7 +136,7 @@ BOOL CEs2Rtp::GetSPPS(Tool::TBuff<BYTE> &sps, Tool::TBuff<BYTE> &pps )
 	std::lock_guard<std::mutex> lock(m_lockSPPS);
 	if (m_buffPPS.size() == 0 || m_buffSPS.size() == 0)
 	{
-		//spsºÍpps»¹Ã»ÓÐÊÕ¼¯Íê
+		//spsï¿½ï¿½ppsï¿½ï¿½Ã»ï¿½ï¿½ï¿½Õ¼ï¿½ï¿½ï¿½
 		return FALSE;
 	}
 	sps.append((byte*)&m_buffSPS[0], m_buffSPS.size());
@@ -145,28 +145,28 @@ BOOL CEs2Rtp::GetSPPS(Tool::TBuff<BYTE> &sps, Tool::TBuff<BYTE> &pps )
 }
 
 /*******************************************************************************
-* º¯ÊýÃû³Æ£º	
-* ¹¦ÄÜÃèÊö£º	½«Nalu´ò°ü³ÉRTP°ü
-* ÊäÈë²ÎÊý£º	uNextDTS		-- ÏÂÒ»¸öNALUµÄDTS
-* Êä³ö²ÎÊý£º	
-* ·µ »Ø Öµ£º	ÎÞ¡£
-* ÆäËüËµÃ÷£º	
-* ÐÞ¸ÄÈÕÆÚ		ÐÞ¸ÄÈË			ÐÞ¸ÄÄÚÈÝ
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½	
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	ï¿½ï¿½Naluï¿½ï¿½ï¿½ï¿½ï¿½RTPï¿½ï¿½
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	uNextDTS		-- ï¿½ï¿½Ò»ï¿½ï¿½NALUï¿½ï¿½DTS
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	
+* ï¿½ï¿½ ï¿½ï¿½ Öµï¿½ï¿½	ï¿½Þ¡ï¿½
+* ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½	
+* ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½		ï¿½Þ¸ï¿½ï¿½ï¿½			ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½
 * ------------------------------------------------------------------------------
-* 2013-07-19	ÕÅ±ó	      	´´½¨
+* 2013-07-19	ï¿½Å±ï¿½	      	ï¿½ï¿½ï¿½ï¿½
 *******************************************************************************/
 void CEs2Rtp::Nalu(UINT uNextDTS)
 {
 	if (m_buffNalu.size() <= 0)
 	{
-		//Ã»ÓÐÒªÌí¼ÓµÄÊý¾Ý£¬»òÕßÃ»ÓÐRtp°üÍ·
+		//Ã»ï¿½ï¿½Òªï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Rtpï¿½ï¿½Í·
 		return;
 	}
 
 	nal_unit_header nal;
 	memcpy(&nal, &m_buffNalu[0], 1);
 
-	//ÊÕ¼¯ppsºÍsps
+	//ï¿½Õ¼ï¿½ppsï¿½ï¿½sps
 	if (7 == nal.nal_unit_type)
 	{
 		std::lock_guard<std::mutex> lock(m_lockSPPS);
@@ -186,10 +186,10 @@ void CEs2Rtp::Nalu(UINT uNextDTS)
 	//	bIFrameStart = IsIFrameStart(&m_buffNalu[0], m_buffNalu.size());
 	//}	
 
-	//ÏÞÖÆRtp°üµÄ³¤¶ÈÐ¡ÓÚµÈÓÚ1400×Ö½Ú
+	//ï¿½ï¿½ï¿½ï¿½Rtpï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½Ð¡ï¿½Úµï¿½ï¿½ï¿½1400ï¿½Ö½ï¿½
 	size_t nMaxLen = 1400;
 
-	//Ò»¸öNALµ¥Ôª·â×°ÎªÒ»¸öRtp°ü
+	//Ò»ï¿½ï¿½NALï¿½ï¿½Ôªï¿½ï¿½×°ÎªÒ»ï¿½ï¿½Rtpï¿½ï¿½
 	if (m_buffNalu.size() + sizeof(RtpHeader) <= nMaxLen)
 	{
 		m_RtpHeader.sn = htons(htons(m_RtpHeader.sn)+1);
@@ -216,11 +216,11 @@ void CEs2Rtp::Nalu(UINT uNextDTS)
 		return;
 	}
 
-	//Ò»¸öNALµ¥Ôª·â×°Îª¶à¸öRtp°ü
+	//Ò»ï¿½ï¿½NALï¿½ï¿½Ôªï¿½ï¿½×°Îªï¿½ï¿½ï¿½Rtpï¿½ï¿½
 	int nPayloadPerRtp = nMaxLen - sizeof(RtpHeader) - 2;
 	FU_A_header FuHeader = {0};
 	FuHeader.type = nal.nal_unit_type;
-	nal.nal_unit_type = 28;						//ÐÞ¸ÄÎªFU_AµÄÀàÐÍ
+	nal.nal_unit_type = 28;						//ï¿½Þ¸ï¿½ÎªFU_Aï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	int nPayloadLen = 0;
 	for (size_t nCount = 1; nCount < m_buffNalu.size(); nCount+=nPayloadLen)
 	{
@@ -257,7 +257,7 @@ void CEs2Rtp::Nalu_hevc(UINT uNextDTS)
 {
 	if (m_buffNalu.size() <= 0)
 	{
-		//Ã»ÓÐÒªÌí¼ÓµÄÊý¾Ý£¬»òÕßÃ»ÓÐRtp°üÍ·
+		//Ã»ï¿½ï¿½Òªï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Rtpï¿½ï¿½Í·
 		return;
 	}
 
@@ -269,10 +269,10 @@ void CEs2Rtp::Nalu_hevc(UINT uNextDTS)
 	uint8_t nuhLayerId = (m_buffNalu[1] >> 1) & 0x3F;
 	uint8_t nuhTemporalIdPlus1 = m_buffNalu[1] & 0x07;
 
-	// Êä³ö½âÎö½á¹û
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	//Log(Tool::Debug, "NAL Unit Header:\nForbidden Zero Bit: %d\nNAL Unit Type: %d\nNUH Layer ID: %d\nNUH Temporal ID Plus1: %d\n", (int)forbiddenZeroBit, (int)nalUnitType, (int)nuhLayerId, (int)nuhTemporalIdPlus1);
 
-	//ÊÕ¼¯ppsºÍsps
+	//ï¿½Õ¼ï¿½ppsï¿½ï¿½sps
 	if (32 == nalUnitType)
 	{
 		std::lock_guard<std::mutex> lock(m_lockSPPS);
@@ -293,13 +293,13 @@ void CEs2Rtp::Nalu_hevc(UINT uNextDTS)
 	}
 	else if (39 == nalUnitType)
 	{
-		//SEI(²¹³äÔöÇ¿ÐÅÏ¢)
+		//SEI(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½Ï¢)
 	}
 
-	//ÏÞÖÆRtp°üµÄ³¤¶ÈÐ¡ÓÚµÈÓÚ1400×Ö½Ú
+	//ï¿½ï¿½ï¿½ï¿½Rtpï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½Ð¡ï¿½Úµï¿½ï¿½ï¿½1400ï¿½Ö½ï¿½
 	size_t nMaxLen = 1400;
-	m_RtpHeader.PT = 99;
-	//Ò»¸öNALµ¥Ôª·â×°ÎªÒ»¸öRtp°ü
+	m_RtpHeader.PT = (m_eEncodeType == H265) ? 99 : 98;
+	//Ò»ï¿½ï¿½NALï¿½ï¿½Ôªï¿½ï¿½×°ÎªÒ»ï¿½ï¿½Rtpï¿½ï¿½
 	if (m_buffNalu.size() + sizeof(RtpHeader) <= nMaxLen)
 	{
 		m_RtpHeader.sn = htons(htons(m_RtpHeader.sn) + 1);
@@ -322,8 +322,8 @@ void CEs2Rtp::Nalu_hevc(UINT uNextDTS)
 		return;
 	}
 
-	//Ò»¸öNALµ¥Ôª·â×°Îª¶à¸öRtp°ü
-	int nPayloadPerRtp = nMaxLen - sizeof(RtpHeader) - 3; //Ô¤ÁôµÄÊý¾Ý
+	//Ò»ï¿½ï¿½NALï¿½ï¿½Ôªï¿½ï¿½×°Îªï¿½ï¿½ï¿½Rtpï¿½ï¿½
+	int nPayloadPerRtp = nMaxLen - sizeof(RtpHeader) - 3; //Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	FU_A_h265_header FuHeader = { 0 };
 
 	BYTE* pNal = (BYTE*)&nal;
@@ -331,7 +331,7 @@ void CEs2Rtp::Nalu_hevc(UINT uNextDTS)
 	pNal[1] = 1;
 
 	FuHeader.type = nalUnitType;
-	//Log(Tool::Debug, "pNal[0]:%x, pNal[1]:%x£¬FuHeader.type:%d", pNal[0], pNal[1], FuHeader.type);
+	//Log(Tool::Debug, "pNal[0]:%x, pNal[1]:%xï¿½ï¿½FuHeader.type:%d", pNal[0], pNal[1], FuHeader.type);
 	size_t nCount = 2;
 	while (nCount < m_buffNalu.size())
 	{
@@ -378,16 +378,16 @@ void CEs2Rtp::Nalu_hevc(UINT uNextDTS)
 	m_buffNalu.clear();
 }
 /*******************************************************************************
-* º¯ÊýÃû³Æ£º	
-* ¹¦ÄÜÃèÊö£º	ÅÐ¶ÏÒ»¸öNALµ¥ÔªÊÇ·ñÊÇIÖ¡µÄ¿ªÊ¼
-* ÊäÈë²ÎÊý£º	pBuff			-- NALµ¥ÔªµÄÊý¾ÝÖ¸Õë£¬²»°üÀ¨ÆðÊ¼Âë
-*				nLen			-- Êý¾Ý³¤¶È
-* Êä³ö²ÎÊý£º	
-* ·µ »Ø Öµ£º	Ö´ÐÐ³É¹¦·µ»ØTRUE£¬·ñÔò·µ»ØFALSE¡£
-* ÆäËüËµÃ÷£º	
-* ÐÞ¸ÄÈÕÆÚ		ÐÞ¸ÄÈË			ÐÞ¸ÄÄÚÈÝ
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½	
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	ï¿½Ð¶ï¿½Ò»ï¿½ï¿½NALï¿½ï¿½Ôªï¿½Ç·ï¿½ï¿½ï¿½IÖ¡ï¿½Ä¿ï¿½Ê¼
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	pBuff			-- NALï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
+*				nLen			-- ï¿½ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	
+* ï¿½ï¿½ ï¿½ï¿½ Öµï¿½ï¿½	Ö´ï¿½Ð³É¹ï¿½ï¿½ï¿½ï¿½ï¿½TRUEï¿½ï¿½ï¿½ï¿½ï¿½ò·µ»ï¿½FALSEï¿½ï¿½
+* ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½	
+* ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½		ï¿½Þ¸ï¿½ï¿½ï¿½			ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½
 * ------------------------------------------------------------------------------
-* 2013-07-29	ÕÅ±ó	      	´´½¨
+* 2013-07-29	ï¿½Å±ï¿½	      	ï¿½ï¿½ï¿½ï¿½
 *******************************************************************************/
 BOOL CEs2Rtp::IsIFrameStart(BYTE *pBuff, UINT nLen)
 {
@@ -403,21 +403,21 @@ BOOL CEs2Rtp::IsIFrameStart(BYTE *pBuff, UINT nLen)
 }
 
 /*******************************************************************************
-* º¯ÊýÃû³Æ£º	GetUeValue
-* ¹¦ÄÜÃèÊö£º	´Ó»º³åÇø½âÂëÎÞ·ûºÅ¸çÂ×²¼±àÂëÖµ£»
-* ÊäÈë²ÎÊý£º	pBuff		-- ´ý½âÂëµÄ»º³åÇø£»
-*				nLen		-- ÊäÈëÊý¾ÝµÄ×Ö½Ú³¤¶È£»
-*				nStartBit	-- ´ý½âÂëÊý¾ÝÏà¶ÔÊäÈë»º³åÇø¿ªÍ·µÄÆðÊ¼bitÎ»£»
-* Êä³ö²ÎÊý£º	nStartBit	-- ¸Ã¸çÂ×²¼±àÂëÖµÖ®ºóµÄµÚÒ»¸öbitÎ»£»
-* ·µ »Ø Öµ£º	·µ»Ø½âÂë³öµÄ¸çÂ×²¼±àÂëÖµ¡£
-* ÆäËüËµÃ÷£º	
-* ÐÞ¸ÄÈÕÆÚ		ÐÞ¸ÄÈË	      ÐÞ¸ÄÄÚÈÝ
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½	GetUeValue
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	ï¿½Ó»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½ï¿½Å¸ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	pBuff		-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+*				nLen		-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½ï¿½Ö½Ú³ï¿½ï¿½È£ï¿½
+*				nStartBit	-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë»ºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½Ê¼bitÎ»ï¿½ï¿½
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	nStartBit	-- ï¿½Ã¸ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½ÖµÖ®ï¿½ï¿½Äµï¿½Ò»ï¿½ï¿½bitÎ»ï¿½ï¿½
+* ï¿½ï¿½ ï¿½ï¿½ Öµï¿½ï¿½	ï¿½ï¿½ï¿½Ø½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½
+* ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½	
+* ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½		ï¿½Þ¸ï¿½ï¿½ï¿½	      ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½
 * ------------------------------------------------------------------------------
-* 2010-07-19	ÖÜ·æ	      ´´½¨
+* 2010-07-19	ï¿½Ü·ï¿½	      ï¿½ï¿½ï¿½ï¿½
 *******************************************************************************/
 UINT CEs2Rtp::GetUeValue(BYTE *pBuff, UINT nLen, UINT &nStartBit)
 {
-	//¼ÆËãµÄ¸öÊý
+	//ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½
 	UINT nZeroNum = 0;
 	while (nStartBit < nLen * 8)
 	{
@@ -430,7 +430,7 @@ UINT CEs2Rtp::GetUeValue(BYTE *pBuff, UINT nLen, UINT &nStartBit)
 	}
 	nStartBit++;
 
-	//¼ÆËãÖµ
+	//ï¿½ï¿½ï¿½ï¿½Öµ
 	DWORD dwRet = 0, dwMask = 1;
 	for (UINT i=0; i<nZeroNum; i++)
 	{

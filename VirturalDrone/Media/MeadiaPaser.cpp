@@ -39,11 +39,11 @@ int testBitStreamFlilt()
 {
     const char* default_filename = "F:\\drone\\1.mp4";
     FILE* outfp = fopen("mp4ToH264.h264", "wb");
-    //1:·ÖÅä½Ó¸´ÓÃÆ÷ÉÏÏÂÎÄ
+    //1:ï¿½ï¿½ï¿½ï¿½Ó¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     AVFormatContext* ctx = NULL;
 
     int vedio_index = -1;
-    //2:´ò¿ªÎÄ¼þ
+    //2:ï¿½ï¿½ï¿½Ä¼ï¿½
     int ret = avformat_open_input(&ctx, default_filename, NULL, NULL);
     if (ret != 0)
     {
@@ -54,7 +54,7 @@ int testBitStreamFlilt()
         }
         getchar();
     }
-    //3:»ñÈ¡ÐÅÏ¢
+    //3:ï¿½ï¿½È¡ï¿½ï¿½Ï¢
     ret = avformat_find_stream_info(ctx, NULL);
     if (ret < 0)
     {
@@ -67,32 +67,32 @@ int testBitStreamFlilt()
         }
         getchar();
     }
-    //4:ÕÒµ½ÊÓÆµÁ÷
+    //4:ï¿½Òµï¿½ï¿½ï¿½Æµï¿½ï¿½
     vedio_index = av_find_best_stream(ctx, AVMEDIA_TYPE_VIDEO, -1, -1, NULL, 0);
     if (vedio_index < 0)
     {
         printf("av_find_best_Stream failed");
         return 0;
     }
-    //5:¶ÁÈ¡Ò»Ö¡Êý¾Ý
+    //5:ï¿½ï¿½È¡Ò»Ö¡ï¿½ï¿½ï¿½ï¿½
     AVPacket* pkt = NULL;
     pkt = av_packet_alloc();
     av_init_packet(pkt);
-    //ffmpeg -bsfsÃüÁî¿ÉÒÔ²é¿´ffmpeg¹¤¾ßÖ§³ÖµÄBitstream FilterÀàÐÍ¡£
+    //ffmpeg -bsfsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô²é¿´ffmpegï¿½ï¿½ï¿½ï¿½Ö§ï¿½Öµï¿½Bitstream Filterï¿½ï¿½ï¿½Í¡ï¿½
     const AVBitStreamFilter* bsfilter = av_bsf_get_by_name("h264_mp4toannexb");
 
-    //6:³õÊ¼»¯¹ýÂËÆ÷ÉÏÏÂÎÄ
+    //6:ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     AVBSFContext* bsf_ctx = NULL;
     av_bsf_alloc(bsfilter, &bsf_ctx); //AVBSFContext;
 
-    //7£ºÌí¼Ó½âÂëÆ÷ÊôÐÔ£¬´ÓAVFormatContextÖÐ»ñÈ¡
+    //7ï¿½ï¿½ï¿½ï¿½ï¿½Ó½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô£ï¿½ï¿½ï¿½AVFormatContextï¿½Ð»ï¿½È¡
     avcodec_parameters_copy(bsf_ctx->par_in, ctx->streams[vedio_index]->codecpar);
     if (av_bsf_init(bsf_ctx) < 0) {
         OutputDebugString("av_bsf_init is error\n");
         return -1;
     }
 
-    //8£º¶ÁÈ¡Ò»Ö¡Êý¾Ý
+    //8ï¿½ï¿½ï¿½ï¿½È¡Ò»Ö¡ï¿½ï¿½ï¿½ï¿½
     while (av_read_frame(ctx, pkt) >= 0)
     {
         if (pkt->stream_index == vedio_index)
@@ -104,7 +104,7 @@ int testBitStreamFlilt()
                 av_packet_unref(pkt);
                 continue;
             }
-            av_packet_unref(pkt);   // ÊÍ·Å×ÊÔ´
+            av_packet_unref(pkt);   // ï¿½Í·ï¿½ï¿½ï¿½Ô´
             while (av_bsf_receive_packet(bsf_ctx, pkt) == 0)
             {
                 out_pkt_count++;
@@ -115,7 +115,7 @@ int testBitStreamFlilt()
                 }
                 av_packet_unref(pkt);
             }
-            // TSÁ÷¿ÉÒÔÖ±½ÓÐ´Èë
+            // TSï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½Ð´ï¿½ï¿½
             /*size_t size = fwrite(pkt->data, 1, pkt->size, outfp);
             if(size != pkt->size)
             {
@@ -126,7 +126,7 @@ int testBitStreamFlilt()
         else
         {
             if (ret == 0)
-                av_packet_unref(pkt);        // ÊÍ·ÅÄÚ´æ
+                av_packet_unref(pkt);        // ï¿½Í·ï¿½ï¿½Ú´ï¿½
         }
     }
     if (outfp)
@@ -179,7 +179,7 @@ int CMeadiaPaser::Start(std::string strUrl)
 
     if (strUrl.find("DSS_DEV_ID") == 0)
     {
-        //´ÓÆ½Ì¨»ñÈ¡url
+        //ï¿½ï¿½Æ½Ì¨ï¿½ï¿½È¡url
         std::shared_ptr<CHttp> pHttp = CContextBase::Create<CHttp>();
 
         std::string strId;
@@ -291,14 +291,14 @@ int CMeadiaPaser::InitFFmpeg()
 {
     int ret = 0;
 
-    //av_dict_set(&options, "rtsp_transport", "udp", 0); // ÉèÖÃudp²¥·ÅÂ¼ÏñÊ±³¤Ê±¼äpause »áµ¼ÖÂÎÞ·¨»Ö¸´µÄÎÊÌâ
-    // ÉèÖÃ´«ÊäÐ­ÒéÎªTCPÐ­Òé
+    //av_dict_set(&options, "rtsp_transport", "udp", 0); // ï¿½ï¿½ï¿½ï¿½udpï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ê±ï¿½ï¿½Ê±ï¿½ï¿½pause ï¿½áµ¼ï¿½ï¿½ï¿½Þ·ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½Ð­ï¿½ï¿½ÎªTCPÐ­ï¿½ï¿½
     av_dict_set(&m_ffmpeg_options, "rtsp_transport", "tcp", 0);
     //
-    // ÉèÖÃTCPÁ¬½Ó×î´óÑÓÊ±Ê±¼ä
+    // ï¿½ï¿½ï¿½ï¿½TCPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±Ê±ï¿½ï¿½
     av_dict_set(&m_ffmpeg_options, "max_delay", "100", 0);
 
-    // ÉèÖÃ¡°buffer_size¡±»º´æÈÝÁ¿
+    // ï¿½ï¿½ï¿½Ã¡ï¿½buffer_sizeï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     av_dict_set(&m_ffmpeg_options, "buffer_size", "1024000", 0);
 
     if (!m_AVFormatContext)
@@ -309,15 +309,15 @@ int CMeadiaPaser::InitFFmpeg()
             Log(Tool::Error, "avformat alloc context ptr failed !!!");
             return -1;
         }
-        //m_AVFormatContext->flags |= AVFMT_FLAG_NONBLOCK; //ÉèÖÃ³É·Ç×èÈû
+        //m_AVFormatContext->flags |= AVFMT_FLAG_NONBLOCK; //ï¿½ï¿½ï¿½Ã³É·ï¿½ï¿½ï¿½ï¿½ï¿½
         m_AVFormatContext->interrupt_callback.opaque = (void*)this;
-        m_AVFormatContext->interrupt_callback.callback = interruptCallback;//ÉèÖÃ»Øµ÷
+        m_AVFormatContext->interrupt_callback.callback = interruptCallback;//ï¿½ï¿½ï¿½Ã»Øµï¿½
 
         int pos = m_strUrl.rfind(".");
         if (pos >= 0)
             m_strSuffix = m_strUrl.substr(pos);
         if (!m_strSuffix.compare(".flv"))
-            m_AVFormatContext->probesize = 32; //add at 20230625 ,ÆäËû¸ñÊ½²»ÐèÒªÌ½²â£¬·ñÔòÓÐ¿ÉÄÜµ¼ÖÂÊÓÆµÎÞ·¨½âÂë
+            m_AVFormatContext->probesize = 32; //add at 20230625 ,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ÒªÌ½ï¿½â£¬ï¿½ï¿½ï¿½ï¿½ï¿½Ð¿ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½Þ·ï¿½ï¿½ï¿½ï¿½ï¿½
 
         ret = avformat_open_input(&m_AVFormatContext, m_strUrl.c_str(), NULL, &m_ffmpeg_options);
         if (ret < 0)
@@ -327,7 +327,7 @@ int CMeadiaPaser::InitFFmpeg()
         }
 
         bool bFindStream = false;
-        if (m_AVFormatContext->nb_streams == 0) //Îª0±ØÐëÌ½²â£¬·ñÔòÓÐÐ©ÊÓÆµÎÞ·¨²¥·Å£¬ÖØÇìµÄ²»Îª0
+        if (m_AVFormatContext->nb_streams == 0) //Îª0ï¿½ï¿½ï¿½ï¿½Ì½ï¿½â£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð©ï¿½ï¿½Æµï¿½Þ·ï¿½ï¿½ï¿½ï¿½Å£ï¿½ï¿½ï¿½ï¿½ï¿½Ä²ï¿½Îª0
         {
             {
                 ret = avformat_find_stream_info(m_AVFormatContext, nullptr);
@@ -355,9 +355,9 @@ int CMeadiaPaser::InitFFmpeg()
         }
 
         AVCodecParameters* codecpar = m_AVFormatContext->streams[m_nVideoStreamIndex]->codecpar;
-        if (codecpar->codec_id != AV_CODEC_ID_NONE)//Î´Ê¶±ðµ½AV_CODEC_ID£¬²»ÐèÒªµ÷ÓÃ´Ë½Ó¿Ú£¬·ñÔò´Ë½Ó¿Ú»áÒ»Ö±ÎÞÒâÒåÌ½²â´ó¸ÅÖ±µ½7¡¢8Í£Ö¹£¬¡£µ¼ÖÂ¿¨¶ÙÑÓ³ÙÑÏÖØ
+        if (codecpar->codec_id != AV_CODEC_ID_NONE)//Î´Ê¶ï¿½ï¿½AV_CODEC_IDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ã´Ë½Ó¿Ú£ï¿½ï¿½ï¿½ï¿½ï¿½Ë½Ó¿Ú»ï¿½Ò»Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½7ï¿½ï¿½8Í£Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¿ï¿½ï¿½ï¿½ï¿½Ó³ï¿½ï¿½ï¿½ï¿½ï¿½
         {
-            if (!bFindStream) //ÒÑ¾­Ì½²âÎÞÐèÔÙfindstream
+            if (!bFindStream) //ï¿½Ñ¾ï¿½Ì½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½findstream
                 ret = avformat_find_stream_info(m_AVFormatContext, nullptr);
         }
 
@@ -368,9 +368,9 @@ int CMeadiaPaser::InitFFmpeg()
         }
     }
 
-    m_bParseSei = false; //ÖêÖÞ¹«°²ÏîÄ¿ÐèÒª½âÎö
+    m_bParseSei = false; //ï¿½ï¿½ï¿½Þ¹ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½
 
-    //³õÊ¼»¯PS½âÎöÆ÷
+    //ï¿½ï¿½Ê¼ï¿½ï¿½PSï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     m_psParse.set_es_callback(es_callback_s, this);
     m_psParse.init_parse();
 
@@ -417,7 +417,7 @@ int CMeadiaPaser::InitFFmpeg()
          }
     }
     
-    //ffmpeg -bsfsÃüÁî¿ÉÒÔ²é¿´ffmpeg¹¤¾ßÖ§³ÖµÄBitstream FilterÀàÐÍ¡£
+    //ffmpeg -bsfsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô²é¿´ffmpegï¿½ï¿½ï¿½ï¿½Ö§ï¿½Öµï¿½Bitstream Filterï¿½ï¿½ï¿½Í¡ï¿½
 #if FILTER
     if (m_AVCodec->id == AV_CODEC_ID_HEVC) {
         m_bsfilter = av_bsf_get_by_name(/*"hevc_metadata"*/"hevc_mp4toannexb");
@@ -434,14 +434,14 @@ int CMeadiaPaser::InitFFmpeg()
         return -1;
     }
 
-    //ÉêÇë¹ýÂËÆ÷
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     ret = av_bsf_alloc(m_bsfilter, &m_bsf_ctx); //AVBSFContext;
     if (ret)
     {
         Log(Tool::Error, "FFDecoder av_bsf_alloc failed,%s",GetFFmepgStrError(ret).c_str());
     }
 
-    //Ìí¼Ó½âÂëÆ÷ÊôÐÔ£¬´ÓAVFormatContextÖÐ»ñÈ¡
+    //ï¿½ï¿½ï¿½Ó½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô£ï¿½ï¿½ï¿½AVFormatContextï¿½Ð»ï¿½È¡
     ret = avcodec_parameters_copy(m_bsf_ctx->par_in, m_AVFormatContext->streams[m_nVideoStreamIndex]->codecpar);
     if (ret<0)
     {
@@ -449,7 +449,7 @@ int CMeadiaPaser::InitFFmpeg()
         return -1;
     }
     
-    //³õÊ¼»¯¹ýÂËÆ÷ÉÏÏÂÎÄ
+    //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     if (av_bsf_init(m_bsf_ctx) < 0) {
         Log(Tool::Error, "av_bsf_init is error");
         return -1;
@@ -587,7 +587,7 @@ void CMeadiaPaser::StreamReciveThread()
             if (szErrName != "End of file")
             {
                 Log(Tool::Debug, " av_read_frame error %s\n", szErrName.c_str());
-                //±¨´íÁËÖØÐÂ²¥·Å
+                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â²ï¿½ï¿½ï¿½
                 _clear_packet_video_queue();
                 DeInitFFmpeg();
                 m_bInitFFmpeg = false;
@@ -598,7 +598,7 @@ void CMeadiaPaser::StreamReciveThread()
                 Log(Tool::Debug, " av_read_frame End of file");
                
                 // 
-                //step2 ÖØÐÂ´ÓÍ·¿ªÊ¼²¥·ÅÎÄ¼þ
+                //step2 ï¿½ï¿½ï¿½Â´ï¿½Í·ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
                 _clear_packet_video_queue();
                 DeInitFFmpeg();
                 m_bInitFFmpeg = false;
@@ -620,11 +620,11 @@ void CMeadiaPaser::StreamReciveThread()
             }
             m_psParse.put_pkt_data(packet.data, packet.size);
             av_packet_unref(&packet);
-            continue;//Èç¹ûÊÇpsÊý¾Ý½âÎöÖ±½Ó·µ»Ø¡£
+            continue;//ï¿½ï¿½ï¿½ï¿½ï¿½psï¿½ï¿½ï¿½Ý½ï¿½ï¿½ï¿½Ö±ï¿½Ó·ï¿½ï¿½Ø¡ï¿½
         }
         //add end
 
-        //½âÎöpacket ÊÇ·ñÎªseiÊý¾Ý
+        //ï¿½ï¿½ï¿½ï¿½packet ï¿½Ç·ï¿½Îªseiï¿½ï¿½ï¿½ï¿½
         if (packet.stream_index == m_nVideoStreamIndex && packet.dts != AV_NOPTS_VALUE)
         {
             _input_video_queue(packet);
@@ -665,10 +665,10 @@ void CMeadiaPaser::Es2RtpThread()
             AVPacket packet = m_packet_queue.front();
             AVPacket* pkt = &packet;
 
-            //AVPacket Êý¾ÝÐÎÊ½ÓÐÁ½ÖÖ
-            //1¡¢¶ÔÓÚÓÉÔ­Ê¼Êý¾Ý±àÂëµÃµ½µÄAVPacket¸ñÊ½Óë±ê×¼¸ñÊ½ÏàÍ¬£¬¼´ÆðÊ¼Âëstartcode+Êµ¼ÊÊý¾Ý
-            //2¡¢¶ÔÓÚ½â·â×°µÃµ½µÄAVPacket¸ñÊ½ÎªËÄ×Ö½Ú³¤¶È+Êµ¼ÊÊý¾Ý ÓÃÇ°ËÄ¸ö×Ö½Ú±íÊ¾Êµ¼ÊÊý¾Ý³¤¶È 
-            // ÎÒÃÇ½« µÚ¶þÖÖ¸ñÊ½×ª»»³ÉµÚÒ»ÖÖ¸ñÊ½¡£
+            //AVPacket ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            //1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­Ê¼ï¿½ï¿½ï¿½Ý±ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½AVPacketï¿½ï¿½Ê½ï¿½ï¿½ï¿½×¼ï¿½ï¿½Ê½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½startcode+Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            //2ï¿½ï¿½ï¿½ï¿½ï¿½Ú½ï¿½ï¿½×°ï¿½Ãµï¿½ï¿½ï¿½AVPacketï¿½ï¿½Ê½Îªï¿½ï¿½ï¿½Ö½Ú³ï¿½ï¿½ï¿½+Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç°ï¿½Ä¸ï¿½ï¿½Ö½Ú±ï¿½Ê¾Êµï¿½ï¿½ï¿½ï¿½ï¿½Ý³ï¿½ï¿½ï¿½ 
+            // ï¿½ï¿½ï¿½Ç½ï¿½ ï¿½Ú¶ï¿½ï¿½Ö¸ï¿½Ê½×ªï¿½ï¿½ï¿½Éµï¿½Ò»ï¿½Ö¸ï¿½Ê½ï¿½ï¿½
 #if FILTER
             {
                 int input_size = pkt->size;
@@ -680,13 +680,13 @@ void CMeadiaPaser::Es2RtpThread()
                     continue;
                 }
 
-                av_packet_unref(pkt);   // ÊÍ·Å×ÊÔ´
+                av_packet_unref(pkt);   // ï¿½Í·ï¿½ï¿½ï¿½Ô´
                 m_packet_queue.pop_front();
 
                 while (av_bsf_receive_packet(m_bsf_ctx, pkt) == 0)
                 {
                     if (m_bParseSei)
-                    { //ÖêÖÞ¹«°²ÏÖ³¡ÐèÒª½âÎöseiÊý¾Ý£¬Àï±ß´æ´¢ÎÞÈË»ú×ËÌ¬ÐÅÏ¢
+                    { //ï¿½ï¿½ï¿½Þ¹ï¿½ï¿½ï¿½ï¿½Ö³ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½seiï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ß´æ´¢ï¿½ï¿½ï¿½Ë»ï¿½ï¿½ï¿½Ì¬ï¿½ï¿½Ï¢
                         paser_sei(pkt->data, pkt->size, m_AVCodec->id);
 
                         /*size_t   extradata_size = 0;
@@ -702,7 +702,8 @@ void CMeadiaPaser::Es2RtpThread()
                     UINT uTimestamp = pkt->dts * 1000 / m_AVFormatContext->streams[m_nVideoStreamIndex]->time_base.den;
                     out_pkt_count++;
 
-                    UINT uPts = uTimestamp * 90000 / 1000;  //RTPÁ÷Ê±¼ä´Á°´ÕÕ90K²ÉÑùÂÊ
+                    UINT uPts = uTimestamp * 90000 / 1000;  //RTPæ—¶é—´æˆ³éœ€è¦90Kçš„é¢‘çŽ‡
+                    Log(Tool::Debug, "EsIn: size=%d, pts=%u, dts=%u", pkt->size, uPts, uTimestamp);
                     m_es2Rtp.EsIn(pkt->data, pkt->size, uPts);
 
                     if(m_bFileStream)
@@ -714,7 +715,7 @@ void CMeadiaPaser::Es2RtpThread()
             UINT uTimestamp = pkt->dts * 1000 / m_AVFormatContext->streams[m_nVideoStreamIndex]->time_base.den;
             //out_pkt_count++;
 
-            UINT uPts = uTimestamp * 90000 / 1000;  //RTPÁ÷Ê±¼ä´Á°´ÕÕ90K²ÉÑùÂÊ
+            UINT uPts = uTimestamp * 90000 / 1000;  //RTPï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½90Kï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             m_es2Rtp.EsIn(pkt->data, pkt->size, uPts);
 
             char buf[512] = { 0 };
@@ -733,7 +734,7 @@ void CMeadiaPaser::Es2RtpThread()
     Log(Tool::Debug, "rtp thread exit!\n");
 }
 
-//ES2RtpµÄESÊä³ö»Øµ÷º¯Êý
+//ES2Rtpï¿½ï¿½ESï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½
 void CMeadiaPaser::RtpCB_s(LPVOID lpContext, byte* pRtp, int nLen, int nPayloadLen, UINT nDTS)
 {
     CMeadiaPaser* pThis = (CMeadiaPaser*)lpContext;
@@ -744,6 +745,8 @@ void CMeadiaPaser::RtpCB_s(LPVOID lpContext, byte* pRtp, int nLen, int nPayloadL
 
     if (pThis)
     {
+        // æ‰“å°RTPå¤´éƒ¨å‰4å­—èŠ‚ç”¨äºŽè°ƒè¯•
+        //Log(Tool::Debug, "RTP Header: %02X %02X %02X %02X", pRtp[0], pRtp[1], pRtp[2], pRtp[3]);
         pThis->RtpCB(pRtp, nLen, nPayloadLen, nDTS);
     }
 }
@@ -755,6 +758,7 @@ void CMeadiaPaser::RtpCB(
     UINT nDTS
 )
 {
+    //Log(Tool::Debug, "RtpCB: nLen=%d, nPayloadLen=%d", nLen, nPayloadLen);
     std::lock_guard<std::mutex> lock(m_mutexMapRecvClient2);
     std::map<std::string, std::pair<CT_RtpRecv, void*>>::iterator itor = m_mapRevClient2.begin();
     for (; itor != m_mapRevClient2.end(); itor++) {
@@ -823,7 +827,7 @@ void CMeadiaPaser::es_callback_(unsigned char* es_data, int es_data_len, PS_ESPa
         break;
     case PS_ES_FRAME_TYPE_SEI:
     {
-        //½âÎöseiÊý¾Ý£¬Í¨¹ýmqtt½«Êý¾Ý·¢ËÍµ½mqtt·þÎñ
+        //ï¿½ï¿½ï¿½ï¿½seiï¿½ï¿½ï¿½Ý£ï¿½Í¨ï¿½ï¿½mqttï¿½ï¿½ï¿½ï¿½ï¿½Ý·ï¿½ï¿½Íµï¿½mqttï¿½ï¿½ï¿½ï¿½
     }
         break;
     case PS_ES_FRAME_TYPE_SPS:
@@ -855,7 +859,7 @@ void CMeadiaPaser::es_callback_(unsigned char* es_data, int es_data_len, PS_ESPa
 
 bool CMeadiaPaser::CreateCodecpar()
 {
-    //¹¹Ôìextradata
+    //ï¿½ï¿½ï¿½ï¿½extradata
     AVPacket pkt;
     int ret = -1;
     while (1) {
@@ -864,7 +868,7 @@ bool CMeadiaPaser::CreateCodecpar()
             break;
 
         if (pkt.stream_index == m_nVideoStreamIndex) {
-            //Ì½²â±àÂëÀàÐÍ
+            //Ì½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             std::string strType;
             bool ret = probe_stream_type(&pkt, strType);
             if (!ret)
@@ -874,7 +878,7 @@ bool CMeadiaPaser::CreateCodecpar()
             }
 
             if (!strType.compare("H264")) {
-                // ½âÎöNALµ¥Ôª
+                // ï¿½ï¿½ï¿½ï¿½NALï¿½ï¿½Ôª
                 if (extract_sps_pps_from_packet(m_AVFormatContext->streams[m_nVideoStreamIndex]->codecpar, &pkt)) {
                     //av_packet_unref(&pkt);
                     m_AVFormatContext->streams[m_nVideoStreamIndex]->codecpar->codec_id = AV_CODEC_ID_H264;
@@ -887,7 +891,7 @@ bool CMeadiaPaser::CreateCodecpar()
                 }
             }
             else if (!strType.compare("HEVC")) {
-                // ½âÎöNALµ¥Ôª
+                // ï¿½ï¿½ï¿½ï¿½NALï¿½ï¿½Ôª
                 if (extract_sps_pps_from_packet_hevc(m_AVFormatContext->streams[m_nVideoStreamIndex]->codecpar, &pkt)) {
                     //av_packet_unref(&pkt);
                     m_AVFormatContext->streams[m_nVideoStreamIndex]->codecpar->codec_id = AV_CODEC_ID_HEVC;
@@ -906,7 +910,7 @@ bool CMeadiaPaser::CreateCodecpar()
     return true;
 }
 
-//ÅÐ¶ÏÕâ¸öpacketµÄ±àÂëÀàÐÍ/H264,H265
+//ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½packetï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/H264,H265
 bool CMeadiaPaser::probe_stream_type(const AVPacket* pkt, std::string& strType)
 {
     const uint8_t* data = pkt->data;
@@ -914,7 +918,7 @@ bool CMeadiaPaser::probe_stream_type(const AVPacket* pkt, std::string& strType)
     int offset = 0;
 
     while (offset < size - 3) {
-        // ²éÕÒÆðÊ¼Âë (00 00 01 »ò 00 00 00 01)
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ (00 00 01 ï¿½ï¿½ 00 00 00 01)
         if ((data[offset] == 0x00 && data[offset + 1] == 0x00 && data[offset + 2] == 0x01) ||
             (offset < size - 4 && data[offset] == 0x00 && data[offset + 1] == 0x00 &&
                 data[offset + 2] == 0x00 && data[offset + 3] == 0x01)) {
@@ -933,9 +937,9 @@ bool CMeadiaPaser::probe_stream_type(const AVPacket* pkt, std::string& strType)
             uint8_t nal_type_hevc = 0;
 
             nal_type = data[nal_start] & 0x1F;  //0x01 0xba  0x01 0xbb 0x01 0xbc
-            nal_type_hevc = (data[nal_start] >> 1) & 0x3F; //hevc nal head 2¸ö×Ö½Ú £¬È¡ NAL Í· µÚÒ»¸ö×Ö½ÚµÄ¸ß 6 Î»
+            nal_type_hevc = (data[nal_start] >> 1) & 0x3F; //hevc nal head 2ï¿½ï¿½ï¿½Ö½ï¿½ ï¿½ï¿½È¡ NAL Í· ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö½ÚµÄ¸ï¿½ 6 Î»
 
-            // ²éÕÒÏÂÒ»¸öÆðÊ¼Âë
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
             int next_start = nal_start;
             while (next_start < size - 3) {
                 if ((data[next_start] == 0x00 && data[next_start + 1] == 0x00 && data[next_start + 2] == 0x01) ||
@@ -973,7 +977,7 @@ bool CMeadiaPaser::extract_sps_pps_from_packet(AVCodecParameters* codecpar, cons
     int offset = 0;
 
     while (offset < size - 3) {
-        // ²éÕÒÆðÊ¼Âë (00 00 01 »ò 00 00 00 01)
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ (00 00 01 ï¿½ï¿½ 00 00 00 01)
         if ((data[offset] == 0x00 && data[offset + 1] == 0x00 && data[offset + 2] == 0x01) ||
             (offset < size - 4 && data[offset] == 0x00 && data[offset + 1] == 0x00 &&
                 data[offset + 2] == 0x00 && data[offset + 3] == 0x01)) {
@@ -992,7 +996,7 @@ bool CMeadiaPaser::extract_sps_pps_from_packet(AVCodecParameters* codecpar, cons
 
             nal_type = data[nal_start] & 0x1F;  //0x01 0xba  0x01 0xbb 0x01 0xbc
 
-            // ²éÕÒÏÂÒ»¸öÆðÊ¼Âë
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
             int next_start = nal_start;
             while (next_start < size - 3) {
                 if ((data[next_start] == 0x00 && data[next_start + 1] == 0x00 && data[next_start + 2] == 0x01) ||
@@ -1006,13 +1010,13 @@ bool CMeadiaPaser::extract_sps_pps_from_packet(AVCodecParameters* codecpar, cons
             int nal_size = (next_start < size) ? (next_start - nal_start) : (size - nal_start);
 
             if (nal_type == 7 || nal_type == 8 || nal_type == 5) {
-                // Ìø¹ýÒÑ´¦ÀíµÄ SPS/PPS
+                // ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½ï¿½ï¿½ï¿½ï¿½ SPS/PPS
                 if ((nal_type == 7 && bFindSPS) || (nal_type == 8 && bFindPPS)) {
                     offset = next_start;
                     continue;
                 }
 
-                // ¼ÆËãÐÂÊý¾Ý´óÐ¡£¨²»º¬Ìî³ä×Ö½Ú£©
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö½Ú£ï¿½
                 int new_data_size = codecpar->extradata_size + 4 + nal_size;
                 uint8_t* new_data = (uint8_t*)av_realloc(codecpar->extradata, new_data_size + AV_INPUT_BUFFER_PADDING_SIZE);
                 if (!new_data) return false;
@@ -1020,16 +1024,16 @@ bool CMeadiaPaser::extract_sps_pps_from_packet(AVCodecParameters* codecpar, cons
                 codecpar->extradata = new_data;
                 int write_pos = codecpar->extradata_size;
 
-                // Ð´ÈëÆðÊ¼ÂëºÍ NAL Êý¾Ý
+                // Ð´ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ NAL ï¿½ï¿½ï¿½ï¿½
                 uint8_t start_code[4] = { 0x00, 0x00, 0x00, 0x01 };
                 memcpy(codecpar->extradata + write_pos, start_code, 4);
                 memcpy(codecpar->extradata + write_pos + 4, data + nal_start, nal_size);
                 codecpar->extradata_size = new_data_size;
 
-                // Ìî³äÄ©Î²
+                // ï¿½ï¿½ï¿½Ä©Î²
                 memset(codecpar->extradata + write_pos + 4 + nal_size, 0, AV_INPUT_BUFFER_PADDING_SIZE);
 
-                // ½âÎö SPS
+                // ï¿½ï¿½ï¿½ï¿½ SPS
                 if (nal_type == 7) {
                     monk::H26xSPSInfo h264_info;
                     int32_t result = monk::H26xParseSPS::h264Parse((const uint8_t*)(data + nal_start), nal_size, h264_info);
@@ -1070,7 +1074,7 @@ bool CMeadiaPaser::extract_sps_pps_from_packet_hevc(AVCodecParameters* codecpar,
     int offset = 0;
     bool bFindVPS = false;
     while (offset < size - 3) {
-        // ²éÕÒÆðÊ¼Âë (00 00 01 »ò 00 00 00 01)
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ (00 00 01 ï¿½ï¿½ 00 00 00 01)
         if ((data[offset] == 0x00 && data[offset + 1] == 0x00 && data[offset + 2] == 0x01) ||
             (offset < size - 4 && data[offset] == 0x00 && data[offset + 1] == 0x00 &&
                 data[offset + 2] == 0x00 && data[offset + 3] == 0x01)) {
@@ -1087,7 +1091,7 @@ bool CMeadiaPaser::extract_sps_pps_from_packet_hevc(AVCodecParameters* codecpar,
 
             uint8_t nal_type = (data[nal_start] >> 1) & 0x3F;  //0x01 0xba  0x01 0xbb 0x01 0xbc
 
-            // ²éÕÒÏÂÒ»¸öÆðÊ¼Âë
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
             int next_start = nal_start;
             while (next_start < size - 3) {
                 if ((data[next_start] == 0x00 && data[next_start + 1] == 0x00 && data[next_start + 2] == 0x01) ||
@@ -1101,13 +1105,13 @@ bool CMeadiaPaser::extract_sps_pps_from_packet_hevc(AVCodecParameters* codecpar,
             int nal_size = (next_start < size) ? (next_start - nal_start) : (size - nal_start);
 
             if (nal_type == 32 || nal_type == 33 || nal_type == 34) {
-                // Ìø¹ýÒÑ´¦ÀíµÄ VPS/SPS/PPS
+                // ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½ï¿½ï¿½ï¿½ï¿½ VPS/SPS/PPS
                 if ((nal_type == 32 && bFindVPS) || (nal_type == 33 && bFindSPS) || (nal_type == 34 && bFindPPS)) {
                     offset = next_start;
                     continue;
                 }
 
-                // ¼ÆËãÐÂÊý¾Ý´óÐ¡£¨²»º¬Ìî³ä×Ö½Ú£©
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö½Ú£ï¿½
                 int new_data_size = codecpar->extradata_size + 4 + nal_size;
                 uint8_t* new_data = (uint8_t*)av_realloc(codecpar->extradata, new_data_size + AV_INPUT_BUFFER_PADDING_SIZE);
                 if (!new_data) return false;
@@ -1115,16 +1119,16 @@ bool CMeadiaPaser::extract_sps_pps_from_packet_hevc(AVCodecParameters* codecpar,
                 codecpar->extradata = new_data;
                 int write_pos = codecpar->extradata_size;
 
-                // Ð´ÈëÆðÊ¼ÂëºÍ NAL Êý¾Ý
+                // Ð´ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ NAL ï¿½ï¿½ï¿½ï¿½
                 uint8_t start_code[4] = { 0x00, 0x00, 0x00, 0x01 };
                 memcpy(codecpar->extradata + write_pos, start_code, 4);
                 memcpy(codecpar->extradata + write_pos + 4, data + nal_start, nal_size);
                 codecpar->extradata_size = new_data_size;
 
-                // Ìî³äÄ©Î²
+                // ï¿½ï¿½ï¿½Ä©Î²
                 memset(codecpar->extradata + write_pos + 4 + nal_size, 0, AV_INPUT_BUFFER_PADDING_SIZE);
 
-                // ½âÎö SPS
+                // ï¿½ï¿½ï¿½ï¿½ SPS
                 if (nal_type == 33) {
                     monk::H26xSPSInfo h265_info;
 
@@ -1192,27 +1196,27 @@ void CMeadiaPaser::handle_custom_sei(const uint8_t* sei_data, int  payload_size)
 
 bool CMeadiaPaser::paser_sei(const uint8_t* data, int size, enum AVCodecID codec_id)
 {
-    //step1 ÌáÈ¡NALµ¥Ôª
+    //step1 ï¿½ï¿½È¡NALï¿½ï¿½Ôª
 #if 1
-    // ¼ì²éÆðÊ¼Âë(0x00000001»ò0x000001)   
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½(0x00000001ï¿½ï¿½0x000001)   
     if (size >= 4 && data[0] == 0 && data[1] == 0 && data[2] == 1) {
-        // ¶ÌÆðÊ¼Âë(0x000001)
+        // ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½(0x000001)
         data += 3;
         size -= 3;
     }
     else if (size >= 5 && data[0] == 0 && data[1] == 0 && data[2] == 0 && data[3] == 1) {
-        // ³¤ÆðÊ¼Âë(0x00000001)
+        // ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½(0x00000001)
         data += 4;
         size -= 4;
     }
 #endif
 
-    //step2 »ñÈ¡nalÀàÐÍ
+    //step2 ï¿½ï¿½È¡nalï¿½ï¿½ï¿½ï¿½
     uint8_t nal_type = data[0] & (codec_id == AV_CODEC_ID_H264 ? 0x1F : 0x7E >> 1);
 
     if ((codec_id == AV_CODEC_ID_H264 && nal_type == 6) ||
         (codec_id == AV_CODEC_ID_H265 && nal_type == 39)) {
-        //SEI NALµ¥Ôª
+        //SEI NALï¿½ï¿½Ôª
 
         //OutputDebugString("this is sei nal.\n");
         int offset = (codec_id == AV_CODEC_ID_H264) ? 1 : 2;
@@ -1220,7 +1224,7 @@ bool CMeadiaPaser::paser_sei(const uint8_t* data, int size, enum AVCodecID codec
         int sei_size = size - offset;
 
         while (sei_size > 0) {
-            // ½âÎöpayloadÀàÐÍ
+            // ï¿½ï¿½ï¿½ï¿½payloadï¿½ï¿½ï¿½ï¿½
             uint32_t payload_type = 0;
             uint8_t byte;
             do {
@@ -1229,7 +1233,7 @@ bool CMeadiaPaser::paser_sei(const uint8_t* data, int size, enum AVCodecID codec
                 sei_size--;
             } while (byte == 0xFF && sei_size > 0);
 
-            // ½âÎöpayload´óÐ¡
+            // ï¿½ï¿½ï¿½ï¿½payloadï¿½ï¿½Ð¡
             uint32_t payload_size = 0;
             do {
                 byte = *sei_data++;
@@ -1237,33 +1241,33 @@ bool CMeadiaPaser::paser_sei(const uint8_t* data, int size, enum AVCodecID codec
                 sei_size--;
             } while (byte == 0xFF && sei_size > 0);
 
-            // ¼ì²éÊÇ·ñÓÐ×ã¹»µÄ¿Õ¼ä
+            // ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ã¹»ï¿½Ä¿Õ¼ï¿½
             if (payload_size > sei_size) {
-                break; // Êý¾Ý´íÎó
+                break; // ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½
             }
 
-            // ÏÖÔÚ¿ÉÒÔ´¦ÀíÌØ¶¨ÀàÐÍµÄSEI payload
+            // ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½Ø¶ï¿½ï¿½ï¿½ï¿½Íµï¿½SEI payload
 
             /*char buf[256] = { 0 };
             sprintf(buf, "payload_type:%d\n", payload_type);
             OutputDebugString(buf);*/
             switch (payload_type) {
-            case 5:  // ÓÃ»§Êý¾ÝÎ´×¢²áSEI (UUID)
+            case 5:  // ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Î´×¢ï¿½ï¿½SEI (UUID)
                 if (payload_size >= 16) {
-                    // Ç°16×Ö½ÚÊÇUUID
+                    // Ç°16ï¿½Ö½ï¿½ï¿½ï¿½UUID
                     uint8_t uuid[16];
                     memcpy(uuid, sei_data, 16);
-                    // ¼ì²éÊÇ·ñÊÇÌØ¶¨UUID
+                    // ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Ø¶ï¿½UUID
                     //if (memcmp(uuid, your_expected_uuid, 16) == 0) 
                     {
-                        // ´¦Àí×Ô¶¨ÒåSEIÊý¾Ý
+                        // ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½SEIï¿½ï¿½ï¿½ï¿½
                         handle_custom_sei(sei_data + 16, payload_size - 16);
                     }
                 }
                 break;
-                // ÆäËûSEIÀàÐÍ...
+                // ï¿½ï¿½ï¿½ï¿½SEIï¿½ï¿½ï¿½ï¿½...
             default:
-                // Î´ÖªSEIÀàÐÍ
+                // Î´ÖªSEIï¿½ï¿½ï¿½ï¿½
                 break;
             }
 
