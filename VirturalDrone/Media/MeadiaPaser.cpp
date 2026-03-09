@@ -313,11 +313,32 @@ int CMeadiaPaser::InitFFmpeg()
         m_AVFormatContext->interrupt_callback.opaque = (void*)this;
         m_AVFormatContext->interrupt_callback.callback = interruptCallback;//设置回调
 
+        int pos = m_strUrl.rfind(".");
+        if (pos >= 0)
+            m_strSuffix = m_strUrl.substr(pos);
+        if (!m_strSuffix.compare(".flv"))
+            m_AVFormatContext->probesize = 32; //add at 20230625 ,其他格式不需要探测，否则有可能导致视频无法解码
+
         ret = avformat_open_input(&m_AVFormatContext, m_strUrl.c_str(), NULL, &m_ffmpeg_options);
         if (ret < 0)
         {
             Log(Tool::Warning, "[%s][%d][%d][url = %s]FFDecoder open input failed, err: %s", __FUNCTION__, __LINE__, ::time(NULL),m_strUrl.c_str(), GetFFmepgStrError(ret).c_str());
             return -1;
+        }
+
+        bool bFindStream = false;
+        if (m_AVFormatContext->nb_streams == 0) //为0必须探测，否则有些视频无法播放，重庆的不为0
+        {
+            {
+                ret = avformat_find_stream_info(m_AVFormatContext, nullptr);
+                bFindStream = true;
+            }
+
+            if (ret != 0)
+            {
+                Log(Tool::Warning, "Couldn't find stream information.");
+                return false;
+            }
         }
 
         for (unsigned i = 0; i < m_AVFormatContext->nb_streams; i++)
@@ -336,7 +357,8 @@ int CMeadiaPaser::InitFFmpeg()
         AVCodecParameters* codecpar = m_AVFormatContext->streams[m_nVideoStreamIndex]->codecpar;
         if (codecpar->codec_id != AV_CODEC_ID_NONE)//未识别到AV_CODEC_ID，不需要调用此接口，否则此接口会一直无意义探测大概直到7、8停止，。导致卡顿延迟严重
         {
-            ret = avformat_find_stream_info(m_AVFormatContext, nullptr);
+            if (!bFindStream) //已经探测无需再findstream
+                ret = avformat_find_stream_info(m_AVFormatContext, nullptr);
         }
 
         if (ret < 0)
@@ -346,6 +368,7 @@ int CMeadiaPaser::InitFFmpeg()
         }
     }
 
+    m_bParseSei = false; //株洲公安项目需要解析
 
     //初始化PS解析器
     m_psParse.set_es_callback(es_callback_s, this);
@@ -597,10 +620,11 @@ void CMeadiaPaser::StreamReciveThread()
             }
             m_psParse.put_pkt_data(packet.data, packet.size);
             av_packet_unref(&packet);
-            continue;
+            continue;//如果是ps数据解析直接返回。
         }
         //add end
 
+        //解析packet 是否为sei数据
         if (packet.stream_index == m_nVideoStreamIndex && packet.dts != AV_NOPTS_VALUE)
         {
             _input_video_queue(packet);
@@ -661,6 +685,20 @@ void CMeadiaPaser::Es2RtpThread()
 
                 while (av_bsf_receive_packet(m_bsf_ctx, pkt) == 0)
                 {
+                    if (m_bParseSei)
+                    { //株洲公安现场需要解析sei数据，里边存储无人机姿态信息
+                        paser_sei(pkt->data, pkt->size, m_AVCodec->id);
+
+                        /*size_t   extradata_size = 0;
+                        uint8_t* side_extradata = av_packet_get_side_data(pkt,
+                            AV_PKT_DATA_NEW_EXTRADATA,
+                            &extradata_size);
+                        if (side_extradata && extradata_size > 0)
+                        {
+                            handle_custom_sei(side_extradata, extradata_size);
+                        }*/
+                    }
+
                     UINT uTimestamp = pkt->dts * 1000 / m_AVFormatContext->streams[m_nVideoStreamIndex]->time_base.den;
                     out_pkt_count++;
 
@@ -680,8 +718,12 @@ void CMeadiaPaser::Es2RtpThread()
             m_es2Rtp.EsIn(pkt->data, pkt->size, uPts);
 
             char buf[512] = { 0 };
-            sprintf(buf, "pts %d", uPts);
+            sprintf(buf, "pts %d,uTimestamp:%d\n", uPts, uTimestamp);
             OutputDebugString(buf);
+
+            if (m_bFileStream)
+                m_timewait.Wait(uTimestamp);
+
             av_packet_unref(pkt);
             m_packet_queue.pop_front();
 #endif
@@ -725,7 +767,7 @@ void CMeadiaPaser::RtpCB(
 
 bool CMeadiaPaser::InitMqtt(std::string strID)
 {
-    m_product.InitMqtt(strID);
+    m_product.InitMqtt(strID,false);
     return true;
 }
 
@@ -780,6 +822,9 @@ void CMeadiaPaser::es_callback_(unsigned char* es_data, int es_data_len, PS_ESPa
     case PS_ES_FRAME_TYPE_IDR:
         break;
     case PS_ES_FRAME_TYPE_SEI:
+    {
+        //解析sei数据，通过mqtt将数据发送到mqtt服务
+    }
         break;
     case PS_ES_FRAME_TYPE_SPS:
         break;
@@ -1110,6 +1155,123 @@ bool CMeadiaPaser::extract_sps_pps_from_packet_hevc(AVCodecParameters* codecpar,
         else {
             offset++;
         }
+    }
+    return false;
+}
+
+void CMeadiaPaser::handle_custom_sei(const uint8_t* sei_data, int  payload_size)
+{
+#if 0
+    char buf[256] = { 0 };
+    sprintf(buf, "payload_size:%d\n", payload_size);
+    OutputDebugString(buf);
+
+    std::string sei;
+    sei.resize(payload_size + 1);
+    sei.assign((char*)sei_data, 0, payload_size);
+    sei[payload_size] = '\0';
+    OutputDebugString(sei.c_str());
+    OutputDebugString("\n");
+    Log(Tool::Debug, "sei:", sei.c_str());
+#else
+
+    char buf[256] = { 0 };
+    sprintf(buf, "payload_size:%d\n", payload_size);
+    OutputDebugString(buf);
+
+    std::string sei;
+    sei.resize(payload_size + 1);
+    sei.assign((char*)sei_data, 0, payload_size);
+    sei[payload_size] = '\0';
+    OutputDebugString(sei.c_str());
+    OutputDebugString("\n");
+    Log(Tool::Debug, "sei:", sei.c_str());
+    m_product.pushMqttData((char *)sei_data, payload_size);
+#endif
+}
+
+bool CMeadiaPaser::paser_sei(const uint8_t* data, int size, enum AVCodecID codec_id)
+{
+    //step1 提取NAL单元
+#if 1
+    // 检查起始码(0x00000001或0x000001)   
+    if (size >= 4 && data[0] == 0 && data[1] == 0 && data[2] == 1) {
+        // 短起始码(0x000001)
+        data += 3;
+        size -= 3;
+    }
+    else if (size >= 5 && data[0] == 0 && data[1] == 0 && data[2] == 0 && data[3] == 1) {
+        // 长起始码(0x00000001)
+        data += 4;
+        size -= 4;
+    }
+#endif
+
+    //step2 获取nal类型
+    uint8_t nal_type = data[0] & (codec_id == AV_CODEC_ID_H264 ? 0x1F : 0x7E >> 1);
+
+    if ((codec_id == AV_CODEC_ID_H264 && nal_type == 6) ||
+        (codec_id == AV_CODEC_ID_H265 && nal_type == 39)) {
+        //SEI NAL单元
+
+        //OutputDebugString("this is sei nal.\n");
+        int offset = (codec_id == AV_CODEC_ID_H264) ? 1 : 2;
+        const uint8_t* sei_data = data + offset;
+        int sei_size = size - offset;
+
+        while (sei_size > 0) {
+            // 解析payload类型
+            uint32_t payload_type = 0;
+            uint8_t byte;
+            do {
+                byte = *sei_data++;
+                payload_type += byte;
+                sei_size--;
+            } while (byte == 0xFF && sei_size > 0);
+
+            // 解析payload大小
+            uint32_t payload_size = 0;
+            do {
+                byte = *sei_data++;
+                payload_size += byte;
+                sei_size--;
+            } while (byte == 0xFF && sei_size > 0);
+
+            // 检查是否有足够的空间
+            if (payload_size > sei_size) {
+                break; // 数据错误
+            }
+
+            // 现在可以处理特定类型的SEI payload
+
+            /*char buf[256] = { 0 };
+            sprintf(buf, "payload_type:%d\n", payload_type);
+            OutputDebugString(buf);*/
+            switch (payload_type) {
+            case 5:  // 用户数据未注册SEI (UUID)
+                if (payload_size >= 16) {
+                    // 前16字节是UUID
+                    uint8_t uuid[16];
+                    memcpy(uuid, sei_data, 16);
+                    // 检查是否是特定UUID
+                    //if (memcmp(uuid, your_expected_uuid, 16) == 0) 
+                    {
+                        // 处理自定义SEI数据
+                        handle_custom_sei(sei_data + 16, payload_size - 16);
+                    }
+                }
+                break;
+                // 其他SEI类型...
+            default:
+                // 未知SEI类型
+                break;
+            }
+
+            sei_data += payload_size;
+            sei_size -= payload_size;
+        }
+
+        return true;
     }
     return false;
 }

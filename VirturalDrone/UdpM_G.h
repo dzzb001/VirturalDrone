@@ -16,7 +16,6 @@ namespace Tool
 		std::shared_ptr<CUdpM> GetUdpInstance();
 		bool Init();
 
-
 		void SetParam(const std::string &strLocalIP, int nLocalPort, const std::string &strServerIP, int nServerPort)
 		{
 			m_strLocalIP = strLocalIP;

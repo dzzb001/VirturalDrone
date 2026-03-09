@@ -176,8 +176,13 @@ protected:
 	bool probe_stream_type(const AVPacket* pkt, std::string& strType);
 	bool extract_sps_pps_from_packet(AVCodecParameters* codecpar, const AVPacket* pkt);			//解析h264 sps
 	bool extract_sps_pps_from_packet_hevc(AVCodecParameters* codecpar, const AVPacket* pkt);	//解析hevc sps
+
+	//解析SEI信息
+	bool paser_sei(const uint8_t* data, int size, enum AVCodecID codec_id);
+	void handle_custom_sei(const uint8_t* sei_data, int  payload_size);
 protected:
 	std::string m_strUrl;
+	std::string m_strSuffix;
 	bool		m_bStart;
 	bool		m_bStartStreamThread;
 	bool		m_bStartDispatchThread;
@@ -221,5 +226,8 @@ protected:
 	bool bNeedDemuxPS = false;
 	CParsePS m_psParse;
 	std::list<AVPacket> m_packet_queue_temp; //存放创建codecpar时读取的paket
+
+	bool m_bParseSei = false;
+	AVCodecID   m_codec_id;
 };
 

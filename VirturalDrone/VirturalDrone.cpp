@@ -12,7 +12,10 @@ int main()
 	input.CaptureSignal();
 
 	CDrone drone;
-	drone.Init();
+
+	if (!drone.Init())
+		return 0;
+
 	input.Loop();
 	drone.Deinit();
 

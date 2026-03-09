@@ -58,6 +58,17 @@ public:
 	//停止工作
 	bool QStop();
 
+
+	bool ReStart(
+		int nRecvBuf = 0,
+		int nSendBuf = 0,
+		bool bCheckConnect = false,				//true:当对端端口不可达时，视为错误处理关闭socket。false：不检查对端端口可达与否。
+		unsigned short nPort = 0,
+		const std::string& strLocalIP = "",
+		const std::string& strMultiIP = "",
+		bool bReuse = false
+	);
+
 	//发送数据
 	bool Send(const char *pData, int nLen, const std::string &strToIP = "", unsigned short nToPort = 0);
 

@@ -4,8 +4,8 @@
 #include <string>
 #include "Tool/XTime.h"
 
-#include "mqtt/async_client.h"
-#include "mqtt/client.h"
+//#include "mqtt/async_client.h"
+//#include "mqtt/client.h"
 #include <chrono>
 #include "Tool/XStrUtil.h"
 #include "Tool/XEvent.h"
@@ -36,10 +36,10 @@ CProduct::~CProduct()
 {
 }
 
-bool CProduct::InitMqtt(std::string strId)
+bool CProduct::InitMqtt(std::string strId, bool bFromSrtFile)
 {
+	m_bFromSrtFile = bFromSrtFile;
 	Config::CConfig::GetInstance().GetChMqttInfo(strId, m_chNode);
-
 	//判断是否开启mqtt发送
 	if (m_chNode.mqtt.strEnable.compare("true"))
 	{
@@ -48,17 +48,19 @@ bool CProduct::InitMqtt(std::string strId)
 
 	SetTopic(m_chNode.mqtt.strTopic.c_str());
 
-	if (m_chNode.mqtt.strDataPath.find(".SRT") >= 0)
-	{
-		if (!LoadSrt((char*)m_chNode.mqtt.strDataPath.c_str())) {
-			Log(Tool::Error, "解析SRT文件失败");
-			return false;
+	if (bFromSrtFile) {
+		if (m_chNode.mqtt.strDataPath.find(".SRT") >= 0) 
+		{
+			if (!LoadSrt((char*)m_chNode.mqtt.strDataPath.c_str())) {
+				Log(Tool::Error, "解析SRT文件失败");
+				return false;
+			}
 		}
-	}
-	else {
-		if (!LoadJson((char*)m_chNode.mqtt.strDataPath.c_str())) {
-			Log(Tool::Error, "解析json文件失败");
-			return false;
+		else {
+			if (!LoadJson((char*)m_chNode.mqtt.strDataPath.c_str())) {
+				Log(Tool::Error, "解析json文件失败");
+				return false;
+			}
 		}
 	}
 
@@ -431,8 +433,15 @@ bool CProduct::Start(std::string host, std::string user, std::string password)
 	m_strHostAddress = host;
 	m_strUser = user;
 	m_strPassword = password;
-	m_bWork = true;
-	m_pThread = std::thread(&CProduct::Th_Work, this);
+
+	if (m_bFromSrtFile) {
+		m_bWork = true;
+		m_pThread = std::thread(&CProduct::Th_Work, this);
+	}
+	else {
+		m_bWork = true;
+		m_pThread = std::thread(&CProduct::Th_Work2, this);
+	}
 	return true;
 }
 bool CProduct::End()
@@ -442,6 +451,7 @@ bool CProduct::End()
 
 	m_bWork = false;
 	m_pThread.join();
+	m_listMessages2.clear();
 
 	return true;
 }
@@ -607,4 +617,136 @@ void CProduct::Th_Work()
 	{
 		cerr << exc << endl;
 	}
+}
+
+void CProduct::Th_Work2()
+{
+	try
+	{
+		mqtt::async_client cli(m_strHostAddress, m_strID.c_str()/*, "./persist"*/);
+		auto connOpts = mqtt::connect_options_builder()
+			.user_name(m_strUser.c_str())
+			.password(m_strPassword.c_str())
+			.clean_session()
+			/*.will(mqtt::message(strTopic, "will exit", g_nQOS))*/
+			.finalize();
+
+		cli.start_consuming();
+
+		mqtt::token_ptr conntok = cli.connect(connOpts);
+
+		if (!conntok->wait_for(3000))
+			Log(Tool::Error, "connect mqtt server failed");
+		Log(Tool::Info, "connect mqtt server sucess");
+
+		auto rsp = conntok->get_connect_response();
+		int64 nFrame = 0;
+
+		TimeWait tWait;
+		while (true)
+		{
+			if (!m_bWork) {
+				//退出线程前，先恢复listmessage
+				std::lock_guard<std::mutex> lock(m_mutexListMessage2);
+				m_listMessages2.clear();
+				break;
+			}
+
+			if (!cli.is_connected()) {
+				Log(Tool::Info, "Reconnecting...");
+				try
+				{
+					cli.reconnect();
+				}
+				catch (const mqtt::exception& exc)
+				{
+					cerr << exc << endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(1));
+					continue;
+				}
+			}
+
+			//接收到视频结束事件
+			if (m_videoEndEvent.TryWait(2))
+			{
+				std::lock_guard<std::mutex> lock(m_mutexListMessage2);
+				m_listMessages2.clear();
+				nFrame = 0;
+				//m_bStartSend = true;
+			}
+
+			//if (!m_bStartSend)
+			//	continue;
+
+			if (m_listMessages2.size() > 0)
+			{
+				nFrame++;
+				stuMqMessage data;
+				{
+					std::lock_guard<std::mutex> lock(m_mutexListMessage2);
+					data = m_listMessages2.front();
+					m_listMessages2.pop_front();
+				}
+
+			/*	if (nFrame % 2) {
+					continue;
+				}*/
+
+				//可以发送了
+				mqtt::properties props{
+					{ mqtt::property::RESPONSE_TOPIC, data.strTopic },
+					{ mqtt::property::CORRELATION_DATA, "1" }
+				};
+				auto pubmsg = mqtt::message_ptr_builder()
+					.topic(data.strTopic)
+					.payload(data.strPayload)
+					.qos(0)
+					.properties(props)
+					.finalize();
+
+				Log(Tool::Info, "topic %s start publish", data.strTopic.c_str());
+				cli.publish(pubmsg)->wait_for(1000);
+
+				CString out;
+				out.Format("time: %s\ntopic:%s\n payload:%s\n", data.strCreatAt.c_str(), data.strTopic.c_str(), data.strPayload.c_str());
+				OutputDebugString(out.GetBuffer(0));
+			}
+			else {
+				std::this_thread::sleep_for(std::chrono::milliseconds(2));
+			}
+		}
+
+		cli.disconnect()->wait();
+		Log(Tool::Info, "publish thread exit\n");
+	}
+	catch (const mqtt::exception& exc)
+	{
+		cerr << exc << endl;
+	}
+}
+
+bool CProduct::pushMqttData(char* data, unsigned int data_len)
+{
+	std::lock_guard<std::mutex> lock(m_mutexListMessage2);
+
+	if (m_listMessages2.size() >= 3)
+	{
+		m_listMessages2.pop_front();
+	}
+	stuMqMessage message;
+
+	std::string strTopic;
+	if (!m_strTopic.compare(""))
+		strTopic = "thing/product/1581F5FHD22AT00B0094/osd";
+	else
+		strTopic = m_strTopic.c_str();
+
+	message.strCreatAt = "";
+	message.strTopic = strTopic.c_str();
+
+	message.strPayload.assign(data, 0, data_len);
+
+	m_listMessages2.push_back(message);
+
+	return true;
 }

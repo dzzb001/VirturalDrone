@@ -5,7 +5,7 @@
 #include "../UdpM_G.h"
 
 //注册、注销命令应答的超时时间，单位豪秒
-#define TIMEOUT_REG 60000
+#define TIMEOUT_REG /*60000*/30000
 
 //退出时，注销命令应答的超时等间，单位豪秒
 #define TIMEOUT_UNREG 5000
@@ -357,7 +357,12 @@ void CRegister::Register( int nExpire, const std::string &strNonce /* = "" */, c
 	if (!pUdp->Send(msg.Str().c_str(), msg.Str().size(), m_strServerIP, m_nServerPort))
 	{
 		Log(Tool::Error, "发送注册消息失败！");
-		return;
+		pUdp->QStop();
+		pUdp->ReStart();
+		exit(1);
+
+		//SetState(eSInit);
+		//return;
 	}
 
 	Log(msg.Str().c_str());
@@ -383,6 +388,11 @@ void CRegister::Heart()
 	if (!pUdp->Send(msg.Str().c_str(), msg.Str().size(), m_strServerIP, m_nServerPort))
 	{
 		Log(Tool::Error, "发送心跳消息失败！");
+		pUdp->QStop();
+		pUdp->ReStart();
+		SetState(eSInit);
+		exit(1);
+		return; //add at 20250910
 	}
 	m_nFaildCount++;
 	m_strCallID = msg.GetHead("Call-ID");

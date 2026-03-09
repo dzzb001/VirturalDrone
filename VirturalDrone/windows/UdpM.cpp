@@ -216,6 +216,85 @@ bool CUdpM::Start( int nRecvBuf /* = 0 */, int nSendBuf /* = 0 */, bool bCheckCo
 	return true;
 }
 
+bool CUdpM::ReStart(int nRecvBuf /* = 0 */, int nSendBuf /* = 0 */, bool bCheckConnect /*= false*/, unsigned short nPort /* = 0 */,
+	const std::string& strLocalIP /* = "" */, const std::string& strMultiIP /* = "" */, bool bReuse /* = false */)
+{
+	if (nullptr == GetMonitor())
+	{
+		Log("[CUdpM::Start]还未设置网络驱动器！");
+		return false;
+	}
+	if (INVALID_SOCKET == m_socket && !PreSocket(m_strLocalIP, m_nLocalPort, bReuse))
+	{
+		return false;
+	}
+	m_strMultiIP = strMultiIP;
+
+	//设置Socket缓冲(一般默认是8192)
+	if (0 != nRecvBuf)
+	{
+		if (SOCKET_ERROR == setsockopt(m_socket, SOL_SOCKET, SO_RCVBUF, (char*)&nRecvBuf, sizeof(nRecvBuf)))
+		{
+			Log("[CUdpM::Start]设置端口接收缓存大小失败<%s:%d> RecvBuff<%d>！", m_strLocalIP.c_str(), m_nLocalPort, nRecvBuf);
+			CloseSocket(m_socket);
+			return false;
+		}
+	}
+	if (0 != nSendBuf)
+	{
+		if (SOCKET_ERROR == setsockopt(m_socket, SOL_SOCKET, SO_SNDBUF, (char*)&nSendBuf, sizeof(nSendBuf)))
+		{
+			Log("[CUdpM::Start]设置端口发送缓存大小失败<%s:%d> SendBuff<%d>！", m_strLocalIP.c_str(), m_nLocalPort, nSendBuf);
+			CloseSocket(m_socket);
+			return false;
+		}
+	}
+	m_bCheckConnect = bCheckConnect;
+	if (!strMultiIP.empty())
+	{
+		//加入组播组
+		struct ip_mreq mreq = { 0 };
+		inet_pton(AF_INET, strMultiIP.c_str(), (void*)&mreq.imr_multiaddr.s_addr);
+		inet_pton(AF_INET, strLocalIP.c_str(), (void*)&mreq.imr_interface.s_addr);
+		if (SOCKET_ERROR == setsockopt(m_socket, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&mreq, sizeof(mreq)))
+		{
+			Log("[CUdpM::Start]加入组播组<%s>失败<%s:%d>！", strMultiIP.c_str(), strLocalIP.c_str(), nPort);
+			CloseSocket(m_socket);
+			return false;
+		}
+	}
+	if (!GetMonitor()->Attach(m_socket))
+	{
+		Log("[CUdpM::Start] 添加到完成端口失败：socket<%d>", m_socket);
+		Clear();
+		CloseSocket(m_socket);
+		return false;
+	}
+
+	m_mutextContext.lock();
+	m_pContextSend = GetMonitor()->PostSendTo(m_socket, SentToCB, m_pThis.lock(), ErrCB, m_pThis.lock());
+	if (NULL == m_pContextSend)
+	{
+		m_mutextContext.unlock();
+		Log("[CUdpM::Start]获取发送环境变量失败: socket<%d>", m_socket);
+		Clear();
+		CloseSocket(m_socket);
+		return false;
+	}
+	m_mutextContext.unlock();
+
+	if (!GetMonitor()->PostRecvFrom(m_socket, RecvFromCB, m_pThis.lock(), ErrCB, m_pThis.lock()))
+	{
+		Log("[CUdpM::Start] 失败：socket<%d>", m_socket);
+		Clear();
+		CloseSocket(m_socket);
+		return false;
+	}
+
+	Log("[CUdpM::Start]socket<%d>开始在<%s:%d(组播<%s>)> 接收数据", m_socket, m_strLocalIP.c_str(), GetLocalPort(), m_strMultiIP.c_str());
+	return true;
+}
+
 //通知停止工作
 bool CUdpM::QStop()
 {
@@ -253,13 +332,14 @@ bool CUdpM::Send(const char *pData, int nLen, const std::string &strToIP /* = ""
 		ExeSend(pData, nLen, strToIP, nToPort);
 		return true;
 	}
+	return false;//modify at 20250910
 	m_collBuff.push_back();
 	auto &node = m_collBuff.back();
 	node.buff.clear();
 	node.buff.append(pData, nLen);
 	node.strDstIP = strToIP;
 	node.nDstPort = nToPort;
-	return true;
+	//return false;
 }
 
 void CUdpM::ExeSend(const char *pData, int nLen, const std::string &strToIP /* = "" */, unsigned short nToPort /* = 0 */)
