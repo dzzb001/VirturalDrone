@@ -418,14 +418,20 @@ int CMeadiaPaser::InitFFmpeg()
     }
     
     //ffmpeg -bsfs������Բ鿴ffmpeg����֧�ֵ�Bitstream Filter���͡�
-#if FILTER
+    //根据编码类型设置RTP负载类型
     if (m_AVCodec->id == AV_CODEC_ID_HEVC) {
-        m_bsfilter = av_bsf_get_by_name(/*"hevc_metadata"*/"hevc_mp4toannexb");
         m_es2Rtp.SetEncodeType(Media::CEs2Rtp::eEncodeType::H265);
     }
     else {
-        m_bsfilter = av_bsf_get_by_name("h264_mp4toannexb");
         m_es2Rtp.SetEncodeType(Media::CEs2Rtp::eEncodeType::H264);
+    }
+
+#if FILTER
+    if (m_AVCodec->id == AV_CODEC_ID_HEVC) {
+        m_bsfilter = av_bsf_get_by_name("hevc_mp4toannexb");
+    }
+    else {
+        m_bsfilter = av_bsf_get_by_name("h264_mp4toannexb");
     }
 
     if (!m_bsfilter)
